@@ -4,6 +4,11 @@
              xmlns:local="clr-namespace:Personaleinsatzplanung"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Dictionaries/Templates.xaml"/>
+                <ResourceDictionary Source="/Dictionaries/Parameters.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

@@ -12,23 +12,17 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Personaleinsatzplanung.SQL;
 
-namespace Personaleinsatzplanung
+namespace Personaleinsatzplanung.CustomControls
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for LabelledTimePicker_VonBis.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class TimePicker_VonBis : UserControl
     {
-        public MainWindow()
+        public TimePicker_VonBis()
         {
             InitializeComponent();
-
-            MySQLHandler sql = new MySQLHandler("127.0.0.1", "root", "password", "pep").Connect();
-            // new AusfallzeitHinzufügen(sql).Show();
-            new SchichtmodellErstellen().Show();
-            Close();
         }
     }
 }

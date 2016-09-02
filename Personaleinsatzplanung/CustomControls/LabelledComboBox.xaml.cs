@@ -12,23 +12,17 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Personaleinsatzplanung.SQL;
 
-namespace Personaleinsatzplanung
+namespace Personaleinsatzplanung.CustomControls
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for LabelledComboBox.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class LabelledComboBox : UserControl
     {
-        public MainWindow()
+        public LabelledComboBox()
         {
             InitializeComponent();
-
-            MySQLHandler sql = new MySQLHandler("127.0.0.1", "root", "password", "pep").Connect();
-            // new AusfallzeitHinzufügen(sql).Show();
-            new SchichtmodellErstellen().Show();
-            Close();
         }
     }
 }
