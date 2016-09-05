@@ -26,8 +26,9 @@ namespace Personaleinsatzplanung
             InitializeComponent();
 
             MySQLHandler sql = new MySQLHandler("127.0.0.1", "root", "password", "pep").Connect();
-            // new AusfallzeitHinzufügen(sql).Show();
-            new SchichtmodellErstellen().Show();
+            //new AusfallzeitHinzufügen(sql).Show();
+            //new SchichtmodellErstellen(sql).Show();
+            new MitarbeiterErfassen(sql).Show();
             Close();
         }
     }

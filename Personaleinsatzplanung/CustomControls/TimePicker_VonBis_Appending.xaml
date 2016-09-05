@@ -13,7 +13,7 @@
             <ColumnDefinition/>
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
-        <CustomControls:TimePicker_VonBis/>
+        <CustomControls:TimePicker_VonBis x:Name="tp"/>
         <Button Grid.Column="3" Width="{StaticResource InputBoxMinHeight}" Height="{StaticResource InputBoxMinHeight}" VerticalAlignment="Top" Margin="3,0,0,0" Click="Button_Click">+</Button>
     </Grid>
 </UserControl>

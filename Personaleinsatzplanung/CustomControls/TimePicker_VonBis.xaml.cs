@@ -20,6 +20,23 @@ namespace Personaleinsatzplanung.CustomControls
     /// </summary>
     public partial class TimePicker_VonBis : UserControl
     {
+
+        public TimeSpan? Von
+        {
+            get
+            {
+                return von.SelectedTime;
+            }
+        }
+
+        public TimeSpan? Bis
+        {
+            get
+            {
+                return bis.SelectedTime;
+            }
+        }
+
         public TimePicker_VonBis()
         {
             InitializeComponent();

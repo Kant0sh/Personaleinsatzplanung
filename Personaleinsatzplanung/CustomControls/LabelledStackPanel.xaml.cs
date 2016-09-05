@@ -32,7 +32,19 @@ namespace Personaleinsatzplanung.CustomControls
             {
                 lbl.Content = value;
             }
-        }//Height="20" Padding="3,0" VerticalContentAlignment="Center" VerticalAlignment="Top"
+        }
+
+        public double LabelWidth
+        {
+            get
+            {
+                return (double)lbl.Width;
+            }
+            set
+            {
+                lbl.Width = value;
+            }
+        }
 
         public LabelledStackPanel()
         {

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,13 +13,14 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Telerik.Windows.Controls.Primitives;
 
 namespace Personaleinsatzplanung.CustomControls
 {
     /// <summary>
     /// Interaction logic for LabelledTextBox.xaml
     /// </summary>
-    public partial class LabelledTextBox : UserControl
+    public partial class LabelledAutoCompleteBox : UserControl
     {
 
         public string LabelText
@@ -45,31 +47,41 @@ namespace Personaleinsatzplanung.CustomControls
             }
         }
 
-        public string Text
+        public object Selection
         {
             get
             {
-                return textBox.Text;
+                return textBox.SelectedItem;
+            }
+        }
+
+        public IEnumerable ItemsSource
+        {
+            get
+            {
+                return textBox.ItemsSource;
             }
             set
             {
-                textBox.Text = value;
+                textBox.ItemsSource = value;
             }
         }
 
-        public LabelledTextBox()
+        public AutoCompleteSelectionMode SelectionMode
+        {
+            get
+            {
+                return textBox.SelectionMode;
+            }
+            set
+            {
+                textBox.SelectionMode = value;
+            }
+        }
+
+        public LabelledAutoCompleteBox()
         {
             InitializeComponent();
-            textBox.Loaded += textBox_Loaded;
-        }
-
-        private void textBox_Loaded(object sender, RoutedEventArgs e)
-        {
-            if(textBox.ActualHeight > textBox.MinHeight)
-            {
-                textBox.TextWrapping = TextWrapping.Wrap;
-                textBox.AcceptsReturn = true;
-            }
         }
     }
 }

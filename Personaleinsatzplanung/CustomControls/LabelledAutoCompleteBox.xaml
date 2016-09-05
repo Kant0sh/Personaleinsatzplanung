@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="Personaleinsatzplanung.CustomControls.TimePicker_VonBis"
+﻿<UserControl x:Class="Personaleinsatzplanung.CustomControls.LabelledAutoCompleteBox"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -6,15 +6,13 @@
              xmlns:local="clr-namespace:Personaleinsatzplanung.CustomControls"
              xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="100" d:DesignWidth="300">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <Label Content="bis" Grid.Column="1" Margin="10,0" VerticalAlignment="top" Padding="3" Height="{StaticResource InputBoxMinHeight}"/>
-        <telerik:RadTimePicker Name="von" MinHeight="{StaticResource InputBoxMinHeight}" MinWidth="{StaticResource InputBoxMinWidth}" Grid.Column="0" VerticalAlignment="Top"/>
-        <telerik:RadTimePicker Name="bis" MinHeight="{StaticResource InputBoxMinHeight}" MinWidth="{StaticResource InputBoxMinWidth}" Grid.Column="2" VerticalAlignment="Top"/>
+        <Label Name="lbl" Height="{StaticResource InputBoxMinHeight}" Padding="3,0" VerticalContentAlignment="Center" Content="Label:" Grid.Column="0" VerticalAlignment="Top"/>
+        <telerik:RadAutoCompleteBox Name="textBox" Grid.Column="1" MinWidth="{StaticResource InputBoxMinWidth}" VerticalAlignment="Stretch" Margin="10,0,0,0" MinHeight="{StaticResource InputBoxMinHeight}"/>
     </Grid>
 </UserControl>

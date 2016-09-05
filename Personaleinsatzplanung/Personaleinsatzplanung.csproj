@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{FA079D02-E0FB-4378-A298-E9CC1384C12B}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Personaleinsatzplanung</RootNamespace>
     <AssemblyName>Personaleinsatzplanung</AssemblyName>
@@ -33,6 +33,9 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="MySql.Data, Version=6.9.9.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL" />
@@ -63,6 +66,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Calendar\CalendarUtil.cs" />
+    <Compile Include="CustomControls\LabelledAutoCompleteBox.xaml.cs">
+      <DependentUpon>LabelledAutoCompleteBox.xaml</DependentUpon>
+    </Compile>
     <Compile Include="CustomControls\LabelledStackPanel.xaml.cs">
       <DependentUpon>LabelledStackPanel.xaml</DependentUpon>
     </Compile>
@@ -73,11 +80,18 @@
       <DependentUpon>TimePicker_VonBis.xaml</DependentUpon>
     </Compile>
     <Compile Include="Data\AusfallzeitHinzufügenViewModel.cs" />
+    <Compile Include="MitarbeiterErfassen.xaml.cs">
+      <DependentUpon>MitarbeiterErfassen.xaml</DependentUpon>
+    </Compile>
     <Compile Include="SchichtmodellErstellen.xaml.cs">
       <DependentUpon>SchichtmodellErstellen.xaml</DependentUpon>
     </Compile>
     <Compile Include="SQL\MySQLHandler.cs" />
     <Page Include="AusfallzeitHinzufügen.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CustomControls\LabelledAutoCompleteBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -136,6 +150,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Dictionaries\Templates.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MitarbeiterErfassen.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

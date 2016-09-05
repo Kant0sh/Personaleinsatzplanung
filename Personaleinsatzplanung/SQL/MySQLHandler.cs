@@ -80,14 +80,46 @@ namespace Personaleinsatzplanung.SQL
             return CreateAndRunCommand(MySQLCommands.SelectWhere, fields, table, where);
         }
 
-        public int Insert(string table, string definitions, string values)
+        public MySqlDataReader SelectWhereOrderBy(string fields, string table, string where, string orderBy)
         {
-            return CreateAndRunInsert(MySQLCommands.Insert, table, definitions, values);
+            return CreateAndRunCommand(MySQLCommands.SelectWhereOrderBy, fields, table, where, orderBy);
         }
 
-        public String GetMySQLFormattedDateTime(DateTime dt)
+        public MySqlDataReader SelectWhereOrderBy(string fields, string table, string orderBy)
         {
-            return string.Format("{yyyy-MM-dd HH:mm:ss}", dt);
+            return CreateAndRunCommand(MySQLCommands.SelectWhereOrderBy, fields, table, orderBy);
+        }
+
+        public MySqlDataReader SelectOrderByLimit(string fields, string table, string orderBy, string limit)
+        {
+            return CreateAndRunCommand(MySQLCommands.SelectOrderByLimit, fields, table, orderBy, limit);
+        }
+
+        public MySqlDataReader SelectWhereOrderByLimit(string fields, string table, string where, string orderBy, string limit)
+        {
+            return CreateAndRunCommand(MySQLCommands.SelectWhereOrderByLimit, fields, where, table, orderBy, limit);
+        }
+
+        public int SelectLastInt(string table, string field)
+        {
+            MySqlDataReader reader = SelectOrderByLimit(field, table, field + " DESC", "1");
+            while (reader.Read())
+            {
+                int i = (int)reader.GetValue(0);
+                reader.Close();
+                return i;
+            }
+            return -1;
+        }
+
+        public int Insert(string table, string definitions, params object[] values)
+        {
+            return CreateAndRunInsert(values, table, definitions);
+        }
+
+        public String GetMySQLFormattedTime(TimeSpan ts)
+        {
+            return ts.ToString();
         }
 
         public MySqlDataReader RunCommand(MySqlCommand command)
@@ -105,9 +137,9 @@ namespace Personaleinsatzplanung.SQL
             return RunCommand(MySQLCommands.CreateCommand(_connection, command, args));
         }
 
-        public int CreateAndRunInsert(string command, params string[] args)
+        public int CreateAndRunInsert(object[] values, string table, string definitions)
         {
-            return RunInsert(MySQLCommands.CreateCommand(_connection, command, args));
+            return RunInsert(MySQLCommands.CreateInsert(_connection, table, definitions, values));
         }
 
         public void PrintReader(MySqlDataReader reader)
@@ -128,11 +160,48 @@ namespace Personaleinsatzplanung.SQL
     {
         public static string Select = "SELECT {0} FROM {1}";
         public static string SelectWhere = Select + " WHERE {2}";
+        public static string SelectOrderBy = Select + " ORDER BY {2}";
+        public static string SelectOrderByLimit = SelectOrderBy + " LIMIT {3}";
+        public static string SelectWhereOrderBy = SelectWhere + " ORDER BY {3}";
+        public static string SelectWhereOrderByLimit = SelectWhereOrderBy + " LIMIT {4}";
         public static string Insert = "INSERT INTO {0} ({1}) VALUES ({2})";
 
         public static MySqlCommand CreateCommand(MySqlConnection connection, string command, params string[] args)
         {
             MySqlCommand comm = new MySqlCommand(string.Format(command, args));
+            comm.Connection = connection;
+            return comm;
+        }
+
+        public static MySqlCommand CreateInsert(MySqlConnection connection, string table, string definitions, params object[] args)
+        {
+            string[] tmpValueDefinitions = definitions.Split(',');
+            string[] valueDefinitions = new string[tmpValueDefinitions.Length];
+            for (int i = 0; i < tmpValueDefinitions.Length; i++)
+            {
+                valueDefinitions[i] = "?" + tmpValueDefinitions[i].Trim();
+            }
+            string valDefString = string.Empty;
+            foreach(string s in valueDefinitions)
+            {
+                valDefString += s + ", ";
+            }
+            valDefString = valDefString.Substring(0, valDefString.Length - 2);
+            List<object> argList = args.ToList();
+            MySqlCommand comm = new MySqlCommand(string.Format(Insert, table, definitions, valDefString));
+            for(int i = 0; i < argList.Count; i++)
+            {
+                MySqlDbType type = MySqlDbType.Bit;
+                object o = argList[i];
+                if (o is string) type = MySqlDbType.VarChar;
+                else if (o is int) type = MySqlDbType.Int32;
+                else if (o is TimeSpan) type = MySqlDbType.Time;
+                else if (o is DateTime) type = MySqlDbType.DateTime;
+                else if (o is bool) type = MySqlDbType.Bit;
+                else if (o is decimal) type = MySqlDbType.Decimal;
+                else return null;
+                comm.Parameters.Add(valueDefinitions[i], type).Value = argList[i];
+            }
             comm.Connection = connection;
             return comm;
         }
