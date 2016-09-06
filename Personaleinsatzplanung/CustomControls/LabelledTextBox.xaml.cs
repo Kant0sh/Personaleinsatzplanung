@@ -45,15 +45,17 @@ namespace Personaleinsatzplanung.CustomControls
             }
         }
 
+        public static readonly DependencyProperty TextProperty = TextBox.TextProperty.AddOwner(typeof(LabelledTextBox));
+
         public string Text
         {
             get
             {
-                return textBox.Text;
+                return (string)GetValue(TextProperty);
             }
             set
             {
-                textBox.Text = value;
+                SetValue(TextProperty, value);
             }
         }
 

@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Telerik.Windows.Controls;
 using Telerik.Windows.Controls.Primitives;
 
 namespace Personaleinsatzplanung.CustomControls
@@ -47,23 +48,45 @@ namespace Personaleinsatzplanung.CustomControls
             }
         }
 
-        public object Selection
+        public static readonly DependencyProperty SelectedItemProperty = RadAutoCompleteBox.SelectedItemProperty.AddOwner(typeof(LabelledAutoCompleteBox));
+
+        public object SelectedItem
         {
             get
             {
-                return textBox.SelectedItem;
+                return GetValue(SelectedItemProperty);
+            }
+            set
+            {
+                SetValue(SelectedItemProperty, value);
             }
         }
+
+        public static readonly DependencyProperty ItemsSourceProperty = RadAutoCompleteBox.ItemsSourceProperty.AddOwner(typeof(LabelledAutoCompleteBox));
 
         public IEnumerable ItemsSource
         {
             get
             {
-                return textBox.ItemsSource;
+                return GetValue(ItemsSourceProperty) as IEnumerable;
             }
             set
             {
-                textBox.ItemsSource = value;
+                SetValue(ItemsSourceProperty, value as IEnumerable);
+            }
+        }
+
+        public static readonly DependencyProperty DisplayMemberPathProperty = RadAutoCompleteBox.DisplayMemberPathProperty.AddOwner(typeof(LabelledAutoCompleteBox));
+
+        public string DisplayMemberPath
+        {
+            get
+            {
+                return (string)GetValue(DisplayMemberPathProperty);
+            }
+            set
+            {
+                SetValue(DisplayMemberPathProperty, (string)value);
             }
         }
 

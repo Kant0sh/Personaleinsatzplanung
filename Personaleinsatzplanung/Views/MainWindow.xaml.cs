@@ -14,7 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Personaleinsatzplanung.SQL;
 
-namespace Personaleinsatzplanung
+namespace Personaleinsatzplanung.Views
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

@@ -1,71 +1,72 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Personaleinsatzplanung.Data
+namespace Personaleinsatzplanung.Models
 {
-    public class MitarbeiterViewModel : BaseViewModel
+    public class Schichtzeit : Model
     {
-
-        string _nachname;
-        string _vorname;
-        int _nummer;
-        string _fähigkeiten;
-
-        public string Nachname
+        Schicht _parentSchicht;
+        public Schicht ParentSchicht
         {
             get
             {
-                return _nachname;
+                return _parentSchicht;
             }
             set
             {
-                _nachname = value;
+                _parentSchicht = value;
                 OnPropertyChanged();
             }
         }
 
-        public string Vorname
+        int _tagId;
+        public int TagId
         {
             get
             {
-                return _vorname;
+                return _tagId;
             }
             set
             {
-                _vorname = value;
+                _tagId = value;
                 OnPropertyChanged();
             }
         }
 
-        public int Nummer
+        TimeSpan _beginn;
+        public TimeSpan Beginn
         {
             get
             {
-                return _nummer;
+                return _beginn;
             }
             set
             {
-                _nummer = value;
+                _beginn = value;
                 OnPropertyChanged();
             }
         }
 
-        public string Fähigkeiten
+        TimeSpan _ende;
+        public TimeSpan Ende
         {
             get
             {
-                return _fähigkeiten;
+                return _ende;
             }
             set
             {
-                _fähigkeiten = value;
+                _ende = value;
                 OnPropertyChanged();
             }
         }
 
+        public Schichtzeit()
+        {
+
+        }
     }
 }

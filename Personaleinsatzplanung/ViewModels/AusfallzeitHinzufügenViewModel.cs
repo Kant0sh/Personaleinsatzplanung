@@ -7,25 +7,14 @@ using System.Threading.Tasks;
 using Personaleinsatzplanung.SQL;
 using MySql.Data.MySqlClient;
 using Telerik.Windows.Controls;
+using Personaleinsatzplanung.Models;
 
-namespace Personaleinsatzplanung.Data
+namespace Personaleinsatzplanung.ViewModels
 {
-    class AusfallzeitHinzufügenViewModel : BaseViewModel
+    class AusfallzeitHinzufügenViewModel : ViewModel
     {
 
-        private ObservableCollection<MitarbeiterViewModel> _mitarbeiter = new ObservableCollection<MitarbeiterViewModel>();
-        public ObservableCollection<MitarbeiterViewModel> Mitarbeiter
-        {
-            get
-            {
-                return _mitarbeiter;
-            }
-            set
-            {
-                _mitarbeiter = value;
-                OnPropertyChanged();
-            }
-        }
+        public ObservableCollection<MitarbeiterViewModel> Mitarbeiter = new ObservableCollection<MitarbeiterViewModel>();
 
         public AusfallzeitHinzufügenViewModel(MySQLHandler sql)
         {
@@ -34,17 +23,17 @@ namespace Personaleinsatzplanung.Data
 
             while (reader.Read())
             {
-                MitarbeiterViewModel mitarbeiter = new MitarbeiterViewModel();
+                Mitarbeiter mitarbeiter = new Mitarbeiter();
                 for (int i = 0; i < reader.FieldCount; i++)
                 {
                     object val = reader.GetValue(i);
                     switch (reader.GetName(i))
                     {
                         case "id":
-                            mitarbeiter.Nummer = (int)val;
+                            mitarbeiter.Id = (int)val;
                             break;
                         case "name":
-                            mitarbeiter.Nachname = (string)val;
+                            mitarbeiter.Name = (string)val;
                             break;
                         case "vorname":
                             mitarbeiter.Vorname = (string)val;
@@ -54,7 +43,7 @@ namespace Personaleinsatzplanung.Data
                             break;
                     }
                 }
-                Mitarbeiter.Add(mitarbeiter);
+                Mitarbeiter.Add(new MitarbeiterViewModel(mitarbeiter));
             }
             reader.Close();
         }

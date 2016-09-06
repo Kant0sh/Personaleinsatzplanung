@@ -1,5 +1,5 @@
 ﻿using MySql.Data.MySqlClient;
-using Personaleinsatzplanung.Data;
+using Personaleinsatzplanung.ViewModels;
 using Personaleinsatzplanung.SQL;
 using System;
 using System.Collections.Generic;
@@ -16,7 +16,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Telerik.Windows.Controls;
 
-namespace Personaleinsatzplanung
+namespace Personaleinsatzplanung.Views
 {
     /// <summary>
     /// Interaction logic for AusfallzeitHinzufügen.xaml
@@ -27,14 +27,8 @@ namespace Personaleinsatzplanung
         {
             StyleManager.ApplicationTheme = new Windows8Theme();
             AusfallzeitHinzufügenViewModel vm = new AusfallzeitHinzufügenViewModel(sql);
-            vm.PropertyChanged += Vm_PropertyChanged;
             DataContext = new AusfallzeitHinzufügenViewModel(sql);
             InitializeComponent();
-        }
-
-        private void Vm_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            
         }
     }
 }

@@ -38,9 +38,37 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Practices.Prism.Mvvm, Version=1.1.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Prism.Mvvm.1.1.1\lib\net45\Microsoft.Practices.Prism.Mvvm.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Prism.Mvvm.Desktop, Version=1.1.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Prism.Mvvm.1.1.1\lib\net45\Microsoft.Practices.Prism.Mvvm.Desktop.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Prism.SharedInterfaces, Version=1.1.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Prism.Mvvm.1.1.1\lib\net45\Microsoft.Practices.Prism.SharedInterfaces.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\CommonServiceLocator.1.3\lib\portable-net4+sl5+netcore45+wpa81+wp8\Microsoft.Practices.ServiceLocation.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="MySql.Data, Version=6.9.9.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL" />
+    <Reference Include="Prism, Version=6.2.0.0, Culture=neutral, PublicKeyToken=91a96d2a154366d8, processorArchitecture=MSIL">
+      <HintPath>..\packages\Prism.Core.6.2.0\lib\net45\Prism.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Prism.Wpf, Version=6.2.0.0, Culture=neutral, PublicKeyToken=91a96d2a154366d8, processorArchitecture=MSIL">
+      <HintPath>..\packages\Prism.Wpf.6.2.0\lib\net45\Prism.Wpf.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Prism.Wpf.6.2.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -79,15 +107,23 @@
     <Compile Include="CustomControls\TimePicker_VonBis.xaml.cs">
       <DependentUpon>TimePicker_VonBis.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Data\AusfallzeitHinzufügenViewModel.cs" />
-    <Compile Include="MitarbeiterErfassen.xaml.cs">
+    <Compile Include="Models\Adresse.cs" />
+    <Compile Include="Models\Kontakt.cs" />
+    <Compile Include="Models\Mitarbeiter.cs" />
+    <Compile Include="Models\Model.cs" />
+    <Compile Include="Models\Rufnummer.cs" />
+    <Compile Include="Models\Schicht.cs" />
+    <Compile Include="Models\Schichtzeit.cs" />
+    <Compile Include="ViewModels\AusfallzeitHinzufügenViewModel.cs" />
+    <Compile Include="ViewModels\MitarbeiterErfassenViewModel.cs" />
+    <Compile Include="Views\MitarbeiterErfassen.xaml.cs">
       <DependentUpon>MitarbeiterErfassen.xaml</DependentUpon>
     </Compile>
-    <Compile Include="SchichtmodellErstellen.xaml.cs">
+    <Compile Include="Views\SchichtmodellErstellen.xaml.cs">
       <DependentUpon>SchichtmodellErstellen.xaml</DependentUpon>
     </Compile>
     <Compile Include="SQL\MySQLHandler.cs" />
-    <Page Include="AusfallzeitHinzufügen.xaml">
+    <Page Include="Views\AusfallzeitHinzufügen.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -123,7 +159,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MainWindow.xaml">
+    <Page Include="Views\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -131,7 +167,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="AusfallzeitHinzufügen.xaml.cs">
+    <Compile Include="Views\AusfallzeitHinzufügen.xaml.cs">
       <DependentUpon>AusfallzeitHinzufügen.xaml</DependentUpon>
     </Compile>
     <Compile Include="CustomControls\LabelledComboBox.xaml.cs">
@@ -143,9 +179,9 @@
     <Compile Include="CustomControls\LabelledTextBox.xaml.cs">
       <DependentUpon>LabelledTextBox.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Data\BaseViewModel.cs" />
-    <Compile Include="Data\MitarbeiterViewModel.cs" />
-    <Compile Include="MainWindow.xaml.cs">
+    <Compile Include="ViewModels\BaseViewModel.cs" />
+    <Compile Include="ViewModels\MitarbeiterViewModel.cs" />
+    <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
@@ -153,11 +189,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MitarbeiterErfassen.xaml">
+    <Page Include="Views\MitarbeiterErfassen.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="SchichtmodellErstellen.xaml">
+    <Page Include="Views\SchichtmodellErstellen.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -180,6 +216,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

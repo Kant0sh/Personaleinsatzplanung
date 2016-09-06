@@ -6,9 +6,9 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Personaleinsatzplanung.Data
+namespace Personaleinsatzplanung.Models
 {
-    public class BaseViewModel : INotifyPropertyChanged
+    public class Model : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
         protected virtual void OnPropertyChanged(PropertyChangedEventArgs e)

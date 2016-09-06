@@ -191,7 +191,7 @@ namespace Personaleinsatzplanung.SQL
             MySqlCommand comm = new MySqlCommand(string.Format(Insert, table, definitions, valDefString));
             for(int i = 0; i < argList.Count; i++)
             {
-                MySqlDbType type = MySqlDbType.Bit;
+                MySqlDbType type = MySqlDbType.VarChar;
                 object o = argList[i];
                 if (o is string) type = MySqlDbType.VarChar;
                 else if (o is int) type = MySqlDbType.Int32;
@@ -199,7 +199,6 @@ namespace Personaleinsatzplanung.SQL
                 else if (o is DateTime) type = MySqlDbType.DateTime;
                 else if (o is bool) type = MySqlDbType.Bit;
                 else if (o is decimal) type = MySqlDbType.Decimal;
-                else return null;
                 comm.Parameters.Add(valueDefinitions[i], type).Value = argList[i];
             }
             comm.Connection = connection;

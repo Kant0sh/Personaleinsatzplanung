@@ -16,7 +16,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace Personaleinsatzplanung
+namespace Personaleinsatzplanung.Views
 {
     /// <summary>
     /// Interaction logic for SchichtmodellErstellen.xaml
