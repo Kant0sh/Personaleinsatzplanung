@@ -12,6 +12,6 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Label Name="lbl" Height="{StaticResource InputBoxMinHeight}" Padding="3,0" VerticalContentAlignment="Center" Content="Label:" Grid.Column="0" VerticalAlignment="Top"/>
-        <TextBox Name="textBox" Grid.Column="1" Text="{Binding Path=Text, RelativeSource={RelativeSource FindAncestor, AncestorType=local:LabelledTextBox, AncestorLevel=1}}" MinWidth="{StaticResource InputBoxMinWidth}" VerticalAlignment="Stretch" Margin="10,0,0,0" MinHeight="{StaticResource InputBoxMinHeight}"/>
+        <TextBox Name="textBox" Grid.Column="1" Text="{Binding Path=Text, RelativeSource={RelativeSource FindAncestor, AncestorType=local:LabelledTextBox, AncestorLevel=1}, UpdateSourceTrigger=PropertyChanged}" MinWidth="{StaticResource InputBoxMinWidth}" VerticalAlignment="Stretch" Margin="10,0,0,0" MinHeight="{StaticResource InputBoxMinHeight}"/>
     </Grid>
 </UserControl>

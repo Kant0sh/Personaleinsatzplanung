@@ -5,6 +5,7 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using Telerik.Windows.Controls;
 
 namespace Personaleinsatzplanung
 {
@@ -13,5 +14,9 @@ namespace Personaleinsatzplanung
     /// </summary>
     public partial class App : Application
     {
+        public App()
+        {
+            StyleManager.ApplicationTheme = new Windows8Theme();
+        }
     }
 }

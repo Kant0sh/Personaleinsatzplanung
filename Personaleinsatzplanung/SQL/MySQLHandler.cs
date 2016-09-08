@@ -24,16 +24,6 @@ namespace Personaleinsatzplanung.SQL
             }
         }
 
-        MySqlConnection _connection;
-
-        public MySqlConnection Connection
-        {
-            get
-            {
-                return _connection;
-            }
-        }
-
         public MySQLHandler(string serverUrl, string userId, string password, string database)
         {
             _serverUrl = serverUrl;
@@ -42,30 +32,53 @@ namespace Personaleinsatzplanung.SQL
             _database = database;
         }
 
-        public MySQLHandler Connect()
+        public MySqlConnection Connect()
         {
+            MySqlConnection connection = null;
             try
             {
-                _connection = new MySqlConnection(ConnectionString);
-                _connection.Open();
+                connection = new MySqlConnection(ConnectionString);
+                connection.Open();
             }
             catch(MySqlException e)
             {
                 Console.WriteLine(e.Message);
             }
-            return this;
+            return connection;
         }
 
-        public void Disconnect()
+        public async Task<MySqlConnection> ConnectAsync()
         {
-            _connection.ClearAllPoolsAsync();
-            _connection.CloseAsync();
+            MySqlConnection connection = null;
+            try
+            {
+                connection = new MySqlConnection(ConnectionString);
+                await connection.OpenAsync();
+            }
+            catch(MySqlException e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            return connection;
+        }
+
+        public MySqlDataReader Select(string table, string fields)
+        {
+            return CreateAndRunCommand(MySQLCommands.Select, fields, table);
         }
 
         public MySqlDataReader SelectAll(string table)
         {
             MySqlCommand command = new MySqlCommand(table);
-            command.Connection = _connection;
+            command.Connection = Connect();
+            command.CommandType = CommandType.TableDirect;
+            return command.ExecuteReader();
+        }
+
+        public async Task<MySqlDataReader> SelectAllAsync(string table)
+        {
+            MySqlCommand command = new MySqlCommand(table);
+            command.Connection = await ConnectAsync();
             command.CommandType = CommandType.TableDirect;
             return command.ExecuteReader();
         }
@@ -73,6 +86,11 @@ namespace Personaleinsatzplanung.SQL
         public MySqlDataReader SelectAllWhere(string table, string where)
         {
             return CreateAndRunCommand(MySQLCommands.SelectWhere, "*", table, where);
+        }
+
+        public async Task<MySqlDataReader> SelectAllWhereAsync(string table, string where)
+        {
+            return await CreateAndRunCommandAsync(MySQLCommands.SelectWhere, "*", table, where);
         }
 
         public MySqlDataReader SelectWhere(string fields, string table, string where)
@@ -112,9 +130,9 @@ namespace Personaleinsatzplanung.SQL
             return -1;
         }
 
-        public int Insert(string table, string definitions, params object[] values)
+        public int Insert(string table, string fields, params object[] values)
         {
-            return CreateAndRunInsert(values, table, definitions);
+            return CreateAndRunInsert(values, table, fields);
         }
 
         public String GetMySQLFormattedTime(TimeSpan ts)
@@ -127,6 +145,11 @@ namespace Personaleinsatzplanung.SQL
             return command.ExecuteReader();
         }
 
+        public async Task<MySqlDataReader> RunCommandAsync(MySqlCommand command)
+        {
+            return await command.ExecuteReaderAsync() as MySqlDataReader;
+        }
+
         public int RunInsert(MySqlCommand command)
         {
             return command.ExecuteNonQuery();
@@ -134,12 +157,28 @@ namespace Personaleinsatzplanung.SQL
 
         public MySqlDataReader CreateAndRunCommand(string command, params string[] args)
         {
-            return RunCommand(MySQLCommands.CreateCommand(_connection, command, args));
+            return RunCommand(MySQLCommands.CreateCommand(Connect(), command, args));
         }
 
-        public int CreateAndRunInsert(object[] values, string table, string definitions)
+        public async Task<MySqlDataReader> CreateAndRunCommandAsync(string command, params string[] args)
         {
-            return RunInsert(MySQLCommands.CreateInsert(_connection, table, definitions, values));
+            return await RunCommandAsync(MySQLCommands.CreateCommand(await ConnectAsync(), command, args));
+        }
+
+        public int CreateAndRunInsert(object[] values, string table, string fields)
+        {
+            return RunInsert(MySQLCommands.CreateInsert(Connect(), table, fields, values));
+        }
+
+        public static string AppendWithCommas(params string[] strings)
+        {
+            string s = "";
+            for(int i = 0; i < strings.Length; i++)
+            {
+                s = s + strings[i];
+                if (i != strings.Length - 1) s = s + ", ";
+            }
+            return s;
         }
 
         public void PrintReader(MySqlDataReader reader)
@@ -173,9 +212,9 @@ namespace Personaleinsatzplanung.SQL
             return comm;
         }
 
-        public static MySqlCommand CreateInsert(MySqlConnection connection, string table, string definitions, params object[] args)
+        public static MySqlCommand CreateInsert(MySqlConnection connection, string table, string fields, params object[] args)
         {
-            string[] tmpValueDefinitions = definitions.Split(',');
+            string[] tmpValueDefinitions = fields.Split(',');
             string[] valueDefinitions = new string[tmpValueDefinitions.Length];
             for (int i = 0; i < tmpValueDefinitions.Length; i++)
             {
@@ -188,7 +227,7 @@ namespace Personaleinsatzplanung.SQL
             }
             valDefString = valDefString.Substring(0, valDefString.Length - 2);
             List<object> argList = args.ToList();
-            MySqlCommand comm = new MySqlCommand(string.Format(Insert, table, definitions, valDefString));
+            MySqlCommand comm = new MySqlCommand(string.Format(Insert, table, fields, valDefString));
             for(int i = 0; i < argList.Count; i++)
             {
                 MySqlDbType type = MySqlDbType.VarChar;

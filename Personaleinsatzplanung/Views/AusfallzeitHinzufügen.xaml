@@ -24,10 +24,9 @@
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
 
-                <!-- Hier Von Bis Custom Control!!! -->
-                <telerik:RadDateTimePicker Grid.Column="0" MinHeight="{StaticResource InputBoxMinHeight}" Margin="0,0,10,10"/>
+                <CustomControls:DateTimePicker_VonBis Grid.Column="0" Margin="0,0,10,10"/>
 
-                <CustomControls:LabelledComboBox Grid.Column="2" Margin="0,0,0,10"/>
+                <CustomControls:LabelledComboBox LabelText="Ausfall Typ:" Grid.Column="2" Margin="0,0,0,10"/>
 
             </Grid>
         </Border>
@@ -36,27 +35,21 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
 
-            <CustomControls:LabelledTextBox Grid.Row="0" Grid.Column="0" Margin="0,0,0,10"/>
+            <CustomControls:LabelledTextBox LabelText="Suche:" Grid.Row="0" Grid.Column="0" Margin="0,0,0,10"/>
 
-            <Button Grid.Row="0" Grid.Column="1" Width="{StaticResource InputBoxMinHeight}" Height="{StaticResource InputBoxMinHeight}" Margin="10,0,0,10"/>
-            <Button Grid.Row="0" Grid.Column="2" Width="{StaticResource InputBoxMinHeight}" Height="{StaticResource InputBoxMinHeight}" Margin="10,0,0,10"/>
-
-            <telerik:RadGridView ShowColumnFooters="True" Name="mitarbeiterGrid" Grid.Row="1" Grid.ColumnSpan="3" ItemsSource="{Binding Mitarbeiter}" AutoGenerateColumns="False" SelectionMode="Extended" BorderBrush="{StaticResource {x:Static SystemColors.ActiveBorderBrushKey}}">
+            <telerik:RadGridView ShowColumnFooters="True" Name="mitarbeiterGrid" Grid.Row="1" Grid.ColumnSpan="3" ItemsSource="{Binding MitarbeiterList}" AutoGenerateColumns="False" SelectionMode="Extended" BorderBrush="{StaticResource {x:Static SystemColors.ActiveBorderBrushKey}}">
                 <telerik:RadGridView.Columns>
-                    <telerik:GridViewSelectColumn Footer="{Binding SelectedItems.Count, ElementName=mitarbeiterGrid, Mode=OneWay, StringFormat={}{0} Mitarbeiter ausgewählt}"/>
-                    <telerik:GridViewDataColumn Header="Nachname" DataMemberBinding="{Binding Nachname}" IsReadOnly="True"/>
+                    <telerik:GridViewSelectColumn Footer="{Binding SelectedItems.Count, ElementName=mitarbeiterGrid, Mode=OneWay}"/>
+                    <telerik:GridViewDataColumn Header="Kennung" DataMemberBinding="{Binding Kennung}" IsReadOnly="True"/>
+                    <telerik:GridViewDataColumn Header="Nachname" DataMemberBinding="{Binding Name}" IsReadOnly="True"/>
                     <telerik:GridViewDataColumn Header="Vorname" DataMemberBinding="{Binding Vorname}" IsReadOnly="True"/>
-                    <telerik:GridViewDataColumn Header="Nummer" DataMemberBinding="{Binding Nummer}" IsReadOnly="True"/>
                     <telerik:GridViewDataColumn Header="Fähigkeiten" DataMemberBinding="{Binding Fähigkeiten}" IsReadOnly="True"/>
                 </telerik:RadGridView.Columns>
             </telerik:RadGridView>
 
+            <Button Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Bottom" Padding="5,3" Margin="0,0,10,10">Hinzfügen</Button>
+            
         </Grid>
     </Grid>
 </Window>

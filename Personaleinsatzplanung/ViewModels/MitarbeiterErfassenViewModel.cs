@@ -11,11 +11,11 @@ using System.Threading.Tasks;
 
 namespace Personaleinsatzplanung.ViewModels
 {
-    class MitarbeiterErfassenViewModel
+    public class MitarbeiterErfassenViewModel
     {
         MySQLHandler _sql;
 
-        public Mitarbeiter Mitarbeiter = new Mitarbeiter(523, "23452", "Müller", "Horst", new Models.Adresse(string.Empty, "München", "153243", "Baumallee", "5b", string.Empty), "Schneiden" , new Models.Schicht(), new Models.Kontakt());
+        public Mitarbeiter Mitarbeiter = new Mitarbeiter();
 
         ObservableCollection<Schicht> _schichten = new ObservableCollection<Schicht>();
         public ObservableCollection<Schicht> Schichten
@@ -68,54 +68,6 @@ namespace Personaleinsatzplanung.ViewModels
             }
         }
 
-        public string Stadt
-        {
-            get
-            {
-                return Mitarbeiter.Adresse.Stadt;
-            }
-            set
-            {
-                Mitarbeiter.Adresse.Stadt = value;
-            }
-        }
-
-        public string Postleitzahl
-        {
-            get
-            {
-                return Mitarbeiter.Adresse.Postleitzahl;
-            }
-            set
-            {
-                Mitarbeiter.Adresse.Postleitzahl = value;
-            }
-        }
-
-        public string Straße
-        {
-            get
-            {
-                return Mitarbeiter.Adresse.Straße;
-            }
-            set
-            {
-                Mitarbeiter.Adresse.Straße = value;
-            }
-        }
-
-        public string Hausnummer
-        {
-            get
-            {
-                return Mitarbeiter.Adresse.Hausnummer;
-            }
-            set
-            {
-                Mitarbeiter.Adresse.Hausnummer = value;
-            }
-        }
-
         public string Fähigkeiten
         {
             get
@@ -136,7 +88,7 @@ namespace Personaleinsatzplanung.ViewModels
             }
             set
             {
-                Mitarbeiter.Schicht = Schicht;
+                Mitarbeiter.Schicht = value;
                 SaveCommand.RaiseCanExecuteChanged();
             }
         }
@@ -209,20 +161,6 @@ namespace Personaleinsatzplanung.ViewModels
             }
         }
 
-        Schicht _selectedSchicht;
-        public Schicht SelectedSchicht
-        {
-            get
-            {
-                return _selectedSchicht;
-            }
-            set
-            {
-                _selectedSchicht = value;
-                SaveCommand.RaiseCanExecuteChanged();
-            }
-        }
-
         DelegateCommand _saveCommand;
         public DelegateCommand SaveCommand
         {
@@ -250,7 +188,7 @@ namespace Personaleinsatzplanung.ViewModels
 
         public bool CanSaveMitarbeiter()
         {
-            if (SelectedSchicht != null && Name.Trim() != string.Empty && Kennung.Trim() != string.Empty) return true;
+            if (Schicht != null && Name.Trim() != string.Empty && Kennung.Trim() != string.Empty) return true;
             return false;
         }
 

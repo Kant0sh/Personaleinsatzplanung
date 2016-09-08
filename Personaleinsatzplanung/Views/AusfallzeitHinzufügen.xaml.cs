@@ -25,10 +25,8 @@ namespace Personaleinsatzplanung.Views
     {
         public AusfallzeitHinzufügen(MySQLHandler sql)
         {
-            StyleManager.ApplicationTheme = new Windows8Theme();
-            AusfallzeitHinzufügenViewModel vm = new AusfallzeitHinzufügenViewModel(sql);
-            DataContext = new AusfallzeitHinzufügenViewModel(sql);
             InitializeComponent();
+            DataContext = new AusfallzeitHinzufügenViewModel(sql);
         }
     }
 }

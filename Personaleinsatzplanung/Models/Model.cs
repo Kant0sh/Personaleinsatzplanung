@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Configuration;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -19,6 +21,14 @@ namespace Personaleinsatzplanung.Models
         protected virtual void OnPropertyChanged([CallerMemberName] string pCaller = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(pCaller));
+        }
+
+        protected static NameValueCollection Settings
+        {
+            get
+            {
+                return ConfigurationManager.AppSettings;
+            }
         }
     }
 }

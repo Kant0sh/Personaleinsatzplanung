@@ -8,17 +8,74 @@ using System.Threading.Tasks;
 
 namespace Personaleinsatzplanung.ViewModels
 {
-    public class MitarbeiterViewModel : ViewModel
+    public class MitarbeiterViewModel
     {
+        Mitarbeiter _mitarbeiter;
         public Mitarbeiter Mitarbeiter
         {
             get
             {
-                return Model as Mitarbeiter;
+                return _mitarbeiter;
             }
             set
             {
-                Model = value;
+                _mitarbeiter = value;
+            }
+        }
+
+        public string Kennung
+        {
+            get
+            {
+                return Mitarbeiter.Kennung;
+            }
+            set
+            {
+                Mitarbeiter.Kennung = value;
+            }
+        }        
+
+        public string GanzerName
+        {
+            get
+            {
+                return Mitarbeiter.Vorname + " " + Mitarbeiter.Name;
+            }
+        }
+
+        public string Name
+        {
+            get
+            {
+                return Mitarbeiter.Name;
+            }
+            set
+            {
+                Mitarbeiter.Name = value;
+            }
+        }
+
+        public string Vorname
+        {
+            get
+            {
+                return Mitarbeiter.Vorname;
+            }
+            set
+            {
+                Mitarbeiter.Vorname = value;
+            }
+        }
+
+        public string Fähigkeiten
+        {
+            get
+            {
+                return Mitarbeiter.Fähigkeiten;
+            }
+            set
+            {
+                Mitarbeiter.Fähigkeiten = value;
             }
         }
 

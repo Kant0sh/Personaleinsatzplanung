@@ -59,10 +59,23 @@ namespace Personaleinsatzplanung.CustomControls
             }
         }
 
+        public delegate void TextChangedEvent(object sender, TextChangedEventArgs e);
+        public event TextChangedEvent TextChanged;
+        protected virtual void OnTextChanged(object sender, TextChangedEventArgs e)
+        {
+            TextChanged?.Invoke(sender, e);
+        }
+
         public LabelledTextBox()
         {
             InitializeComponent();
             textBox.Loaded += textBox_Loaded;
+            textBox.TextChanged += TextBox_TextChanged;
+        }
+
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            OnTextChanged(sender, e);
         }
 
         private void textBox_Loaded(object sender, RoutedEventArgs e)

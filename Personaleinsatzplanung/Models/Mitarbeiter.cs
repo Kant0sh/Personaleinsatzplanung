@@ -9,19 +9,108 @@ namespace Personaleinsatzplanung.Models
 {
     public class Mitarbeiter : Model
     {
-        public String Table
+
+        public static string Table
         {
             get
             {
-                return "mitarbeiter";
+                return Settings["mitarbeiter_table"];
             }
         }
 
-        public String InsertValueDefinitions
+        public static string FieldId
         {
             get
             {
-                return "mitarbeiterkennung, name, vorname, stadt, postleitzahl, straße, hausnummer, faehigkeiten, schicht_id, telefon, mobil, tel_intern, fax_intern, e_mail";
+                return Settings["mitarbeiter_id"];
+            }
+        }
+
+        public static string FieldKennung
+        {
+            get
+            {
+                return Settings["mitarbeiter_kennung"];
+            }
+        }
+
+        public static string FieldName
+        {
+            get
+            {
+                return Settings["mitarbeiter_name"];
+            }
+        }
+
+        public static string FieldVorname
+        {
+            get
+            {
+                return Settings["mitarbeiter_vorname"];
+            }
+        }
+
+        public static string FieldFähigkeiten
+        {
+            get
+            {
+                return Settings["mitarbeiter_fähigkeiten"];
+            }
+        }
+
+        public static string FieldSchicht
+        {
+            get
+            {
+                return Settings["mitarbeiter_schicht"];
+            }
+        }
+
+        public static string FieldTelefon
+        {
+            get
+            {
+                return Settings["mitarbeiter_telefon"];
+            }
+        }
+
+        public static string FieldMobil
+        {
+            get
+            {
+                return Settings["mitarbeiter_mobil"];
+            }
+        }
+
+        public static string FieldTelefonIntern
+        {
+            get
+            {
+                return Settings["mitarbeiter_telefonIntern"];
+            }
+        }
+
+        public static string FieldFaxIntern
+        {
+            get
+            {
+                return Settings["mitarbeiter_faxIntern"];
+            }
+        }
+
+        public static string FieldEMail
+        {
+            get
+            {
+                return Settings["mitarbeiter_email"];
+            }
+        }
+
+        public string InsertFields
+        {
+            get
+            {
+                return MySQLHandler.AppendWithCommas(FieldId, FieldKennung, FieldName, FieldVorname, FieldFähigkeiten, FieldSchicht, FieldTelefon, FieldMobil, FieldTelefonIntern, FieldFaxIntern, FieldEMail);
             }
         }
 
@@ -29,13 +118,13 @@ namespace Personaleinsatzplanung.Models
         {
             get
             {
-                return new object[14] {Kennung, Name, Vorname, Adresse.Stadt, Adresse.Postleitzahl, Adresse.Straße, Adresse.Hausnummer, Fähigkeiten, Schicht.Id, Kontakt.GetRufnummer(RufnummerTyp.FestnetzPrivat), Kontakt.GetRufnummer(RufnummerTyp.MobilDienst), Kontakt.GetRufnummer(RufnummerTyp.FestnetzIntern), Kontakt.GetRufnummer(RufnummerTyp.FaxIntern), Kontakt.EMail};
+                return new object[10] { Kennung, Name, Vorname, Fähigkeiten, Schicht.Id, Kontakt.GetRufnummer(RufnummerTyp.FestnetzPrivat).Nummer, Kontakt.GetRufnummer(RufnummerTyp.MobilDienst).Nummer, Kontakt.GetRufnummer(RufnummerTyp.FestnetzIntern).Nummer, Kontakt.GetRufnummer(RufnummerTyp.FaxIntern).Nummer, Kontakt.EMail };
             }
         }
 
         public void Save(MySQLHandler Sql)
         {
-            Sql.Insert(Table, InsertValueDefinitions, InsertValues);
+            Sql.Insert(Table, InsertFields, InsertValues);
         }
 
         int _id;
@@ -94,16 +183,16 @@ namespace Personaleinsatzplanung.Models
             }
         }
 
-        Adresse _adresse;
-        public Adresse Adresse
+        List<Adresse> _adressen;
+        public List<Adresse> Adressen
         {
             get
             {
-                return _adresse;
+                return _adressen;
             }
             set
             {
-                _adresse = value;
+                _adressen = value;
                 OnPropertyChanged();
             }
         }
@@ -150,15 +239,24 @@ namespace Personaleinsatzplanung.Models
             }
         }
 
-        public Mitarbeiter() { }
+        public Mitarbeiter()
+        {
+            this.Adressen = new List<Adresse>();
+            this.Kontakt = new Kontakt();
+            this.Id = 0;
+            this.Kennung = string.Empty;
+            this.Name = string.Empty;
+            this.Vorname = string.Empty;
+            this.Fähigkeiten = string.Empty;
+        }
 
-        public Mitarbeiter(int Id, string Kennung, string Name, string Vorname, Adresse Adresse, string Fähigkeiten, Schicht Schicht, Kontakt Kontakt)
+        public Mitarbeiter(int Id, string Kennung, string Name, string Vorname, List<Adresse> Adressen, string Fähigkeiten, Schicht Schicht, Kontakt Kontakt)
         {
             this.Id = Id;
             this.Kennung = Kennung;
             this.Name = Name;
             this.Vorname = Vorname;
-            this.Adresse = Adresse;
+            this.Adressen = Adressen;
             this.Fähigkeiten = Fähigkeiten;
             this.Schicht = Schicht;
             this.Kontakt = Kontakt;

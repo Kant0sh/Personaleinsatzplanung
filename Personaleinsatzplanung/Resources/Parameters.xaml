@@ -1,6 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:local="clr-namespace:Personaleinsatzplanung.Dictionaries"
+                    xmlns:local="clr-namespace:Personaleinsatzplanung.Resources"
                     xmlns:sys="clr-namespace:System;assembly=mscorlib">
     <sys:Double x:Key="InputBoxMinHeight">22</sys:Double>
     <sys:Double x:Key="InputBoxMinWidth">60</sys:Double>

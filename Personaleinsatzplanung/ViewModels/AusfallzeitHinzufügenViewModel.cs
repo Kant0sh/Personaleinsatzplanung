@@ -11,15 +11,25 @@ using Personaleinsatzplanung.Models;
 
 namespace Personaleinsatzplanung.ViewModels
 {
-    class AusfallzeitHinzufügenViewModel : ViewModel
+    public class AusfallzeitHinzufügenViewModel
     {
 
-        public ObservableCollection<MitarbeiterViewModel> Mitarbeiter = new ObservableCollection<MitarbeiterViewModel>();
+        ObservableCollection<MitarbeiterViewModel> _mitarbeiter = new ObservableCollection<MitarbeiterViewModel>();
+        public ObservableCollection<MitarbeiterViewModel> MitarbeiterList
+        {
+            get
+            {
+                return _mitarbeiter;
+            }
+            set
+            {
+                _mitarbeiter = value;
+            }
+        }
 
         public AusfallzeitHinzufügenViewModel(MySQLHandler sql)
         {
-            if (sql.Connection.State != System.Data.ConnectionState.Open) sql.Connect();
-            MySqlDataReader reader = sql.SelectAll("mitarbeiter");
+            MySqlDataReader reader = sql.Select(Mitarbeiter.Table, MySQLHandler.AppendWithCommas(Mitarbeiter.FieldId, Mitarbeiter.FieldKennung, Mitarbeiter.FieldName, Mitarbeiter.FieldVorname, Mitarbeiter.FieldFähigkeiten));
 
             while (reader.Read())
             {
@@ -27,26 +37,16 @@ namespace Personaleinsatzplanung.ViewModels
                 for (int i = 0; i < reader.FieldCount; i++)
                 {
                     object val = reader.GetValue(i);
-                    switch (reader.GetName(i))
-                    {
-                        case "id":
-                            mitarbeiter.Id = (int)val;
-                            break;
-                        case "name":
-                            mitarbeiter.Name = (string)val;
-                            break;
-                        case "vorname":
-                            mitarbeiter.Vorname = (string)val;
-                            break;
-                        case "faehigkeiten":
-                            mitarbeiter.Fähigkeiten = (string)val;
-                            break;
-                    }
+                    string name = reader.GetName(i);
+                    if (name == Mitarbeiter.FieldId) mitarbeiter.Id = (int)val;
+                    else if (name == Mitarbeiter.FieldKennung) mitarbeiter.Kennung = (string)val;
+                    else if (name == Mitarbeiter.FieldName) mitarbeiter.Name = (string)val;
+                    else if (name == Mitarbeiter.FieldVorname) mitarbeiter.Vorname = (string)val;
+                    else if (name == Mitarbeiter.FieldFähigkeiten) mitarbeiter.Fähigkeiten = (string)val;
                 }
-                Mitarbeiter.Add(new MitarbeiterViewModel(mitarbeiter));
+                MitarbeiterList.Add(new MitarbeiterViewModel(mitarbeiter));
             }
             reader.Close();
         }
-
     }
 }
