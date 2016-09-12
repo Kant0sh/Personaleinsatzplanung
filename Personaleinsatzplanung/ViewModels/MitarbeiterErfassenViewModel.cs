@@ -194,26 +194,7 @@ namespace Personaleinsatzplanung.ViewModels
 
         public void LoadSchichten()
         {
-            MySqlDataReader reader = _sql.SelectAll("schichten");
-            while (reader.Read())
-            {
-                Schicht tmpSchicht = new Schicht();
-                for(int i = 0; i < reader.FieldCount; i++)
-                {
-                    object val = reader.GetValue(i);
-                    switch (reader.GetName(i))
-                    {
-                        case "schicht_id":
-                            tmpSchicht.Id = (int)val;
-                            break;
-                        case "bezeichnung":
-                            tmpSchicht.Bezeichnung = (string)val;
-                            break;
-                    }
-                }
-                Schichten.Add(tmpSchicht);
-            }
-            reader.Close();
+            
         }
     }
 }

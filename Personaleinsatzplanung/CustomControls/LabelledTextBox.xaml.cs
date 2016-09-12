@@ -33,15 +33,17 @@ namespace Personaleinsatzplanung.CustomControls
             }
         }
 
+        public static readonly DependencyProperty LabelWidthProperty = DependencyProperty.Register("LabelWidth", typeof(double), typeof(LabelledTextBox));
+
         public double LabelWidth
         {
             get
             {
-                return (double)lbl.Width;
+                return (double)GetValue(LabelWidthProperty);
             }
             set
             {
-                lbl.Width = value;
+                SetValue(LabelWidthProperty, value);
             }
         }
 

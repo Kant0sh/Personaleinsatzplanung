@@ -33,6 +33,19 @@ namespace Personaleinsatzplanung.CustomControls
             }
         }
 
+        public static readonly DependencyProperty LabelWidthProperty = DependencyProperty.Register("LabelWidth", typeof(double), typeof(LabelledComboBox));
+        public double LabelWidth
+        {
+            get
+            {
+                return (double)GetValue(LabelWidthProperty);
+            }
+            set
+            {
+                SetValue(LabelWidthProperty, value);
+            }
+        }
+
         public static readonly DependencyProperty ItemsSourceProperty = ComboBox.ItemsSourceProperty.AddOwner(typeof(LabelledComboBox));
         public IEnumerable ItemsSource
         {

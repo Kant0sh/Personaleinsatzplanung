@@ -8,6 +8,30 @@ namespace Personaleinsatzplanung.Models
 {
     public class Schicht : Model
     {
+        public static string Table
+        {
+            get
+            {
+                return Settings["schicht_table"];
+            }
+        }
+
+        public static string FieldId
+        {
+            get
+            {
+                return Settings["schicht_id"];
+            }
+        }
+
+        public static string FieldBezeichnung
+        {
+            get
+            {
+                return Settings["schicht_bezeichnung"];
+            }
+        }
+
         int _id;
         public int Id
         {

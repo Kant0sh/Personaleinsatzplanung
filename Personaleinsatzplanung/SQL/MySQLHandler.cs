@@ -8,43 +8,83 @@ using System.Data;
 
 namespace Personaleinsatzplanung.SQL
 {
-    public class MySQLHandler
+    public class MySQLHandler : ISqlHandler
     {
-
-        string _serverUrl;
-        string _userId;
-        string _password;
-        string _database;
 
         public string ConnectionString
         {
             get
             {
-                return "server=" + _serverUrl + ";uid=" + _userId + ";pwd=" + _password + ";database=" + _database + ";";
+                return "server=" + ServerUrl + ";uid=" + UserId + ";pwd=" + Password + ";database=" + Database + ";";
             }
         }
+
+        string _serverUrl;
+        public string ServerUrl
+        {
+            get
+            {
+                return _serverUrl;
+            }
+
+            set
+            {
+                _serverUrl = value;
+            }
+        }
+
+        string _userId;
+        public string UserId
+        {
+            get
+            {
+                return _userId;
+            }
+
+            set
+            {
+                _userId = value;
+            }
+        }
+
+        string _password;
+        public string Password
+        {
+            get
+            {
+                return _password;
+            }
+
+            set
+            {
+                _password = value;
+            }
+        }
+
+        string _database;
+        public string Database
+        {
+            get
+            {
+                return _database;
+            }
+
+            set
+            {
+                _database = value;
+            }
+        }
+
+        public string Driver { get; set; }
+
+        public string Host { get; set; }
 
         public MySQLHandler(string serverUrl, string userId, string password, string database)
         {
-            _serverUrl = serverUrl;
-            _userId = userId;
-            _password = password;
-            _database = database;
-        }
-
-        public MySqlConnection Connect()
-        {
-            MySqlConnection connection = null;
-            try
-            {
-                connection = new MySqlConnection(ConnectionString);
-                connection.Open();
-            }
-            catch(MySqlException e)
-            {
-                Console.WriteLine(e.Message);
-            }
-            return connection;
+            ServerUrl = serverUrl;
+            UserId = userId;
+            Password = password;
+            Database = database;
         }
 
         public async Task<MySqlConnection> ConnectAsync()
@@ -62,149 +102,120 @@ namespace Personaleinsatzplanung.SQL
             return connection;
         }
 
-        public MySqlDataReader Select(string table, string fields)
+        #region Interface Methods
+
+        public async Task<SqlDataSet> SelectAsync(string Table, string Fields)
         {
-            return CreateAndRunCommand(MySQLCommands.Select, fields, table);
+            return await GetDataAsync(MySqlCommands.Select, Fields, Table);
         }
 
-        public MySqlDataReader SelectAll(string table)
+        public async Task<SqlDataSet> SelectAllAsync(string Table)
         {
-            MySqlCommand command = new MySqlCommand(table);
-            command.Connection = Connect();
+            MySqlCommand command = new MySqlCommand();
             command.CommandType = CommandType.TableDirect;
-            return command.ExecuteReader();
+            MySqlConnection connection = await ConnectAsync();
+            command.Connection = connection;
+            return await SqlDataSet.FromMySqlDataReaderAsync(await RunCommandAsync(connection, command));
         }
 
-        public async Task<MySqlDataReader> SelectAllAsync(string table)
+        public async Task<SqlDataSet> SelectAllWhereAsync(string Table, string Where)
         {
-            MySqlCommand command = new MySqlCommand(table);
-            command.Connection = await ConnectAsync();
-            command.CommandType = CommandType.TableDirect;
-            return command.ExecuteReader();
+            return await GetDataAsync(MySqlCommands.SelectWhere, SqlUtility.All, Table, Where);
         }
 
-        public MySqlDataReader SelectAllWhere(string table, string where)
+        public async Task<SqlDataSet> SelectWhereAsync(string Table, string Fields, string Where)
         {
-            return CreateAndRunCommand(MySQLCommands.SelectWhere, "*", table, where);
+            return await GetDataAsync(MySqlCommands.SelectWhere, Fields, Table, Where);
         }
 
-        public async Task<MySqlDataReader> SelectAllWhereAsync(string table, string where)
+        public async Task<SqlDataSet> SelectOrderByAsync(string Table, string Fields, string OrderBy)
         {
-            return await CreateAndRunCommandAsync(MySQLCommands.SelectWhere, "*", table, where);
+            return await GetDataAsync(MySqlCommands.SelectOrderBy, Fields, Table, OrderBy);
         }
 
-        public MySqlDataReader SelectWhere(string fields, string table, string where)
+        public async Task<SqlDataSet> SelectWhereOrderByAsync(string Table, string Fields, string Where, string OrderBy)
         {
-            return CreateAndRunCommand(MySQLCommands.SelectWhere, fields, table, where);
+            return await GetDataAsync(MySqlCommands.SelectWhereOrderBy, Fields, Table, Where, OrderBy);
         }
 
-        public MySqlDataReader SelectWhereOrderBy(string fields, string table, string where, string orderBy)
+        public async Task<SqlDataSet> SelectAllOrderByAsync(string Table, string OrderBy)
         {
-            return CreateAndRunCommand(MySQLCommands.SelectWhereOrderBy, fields, table, where, orderBy);
+            return await GetDataAsync(MySqlCommands.SelectOrderBy, SqlUtility.All, Table, OrderBy);
         }
 
-        public MySqlDataReader SelectWhereOrderBy(string fields, string table, string orderBy)
+        public async Task<SqlDataSet> SelectAllWhereOrderByAsync(string Table, string Where, string OrderBy)
         {
-            return CreateAndRunCommand(MySQLCommands.SelectWhereOrderBy, fields, table, orderBy);
+            return await GetDataAsync(MySqlCommands.SelectWhereOrderBy, SqlUtility.All, Table, Where, OrderBy);
         }
 
-        public MySqlDataReader SelectOrderByLimit(string fields, string table, string orderBy, string limit)
+        public async Task<SqlDataSet> SelectOrderByLimitAsync(string Table, string Fields, string OrderBy, string Limit)
         {
-            return CreateAndRunCommand(MySQLCommands.SelectOrderByLimit, fields, table, orderBy, limit);
+            return await GetDataAsync(MySqlCommands.SelectOrderByLimit, Fields, Table, OrderBy, Limit);
         }
 
-        public MySqlDataReader SelectWhereOrderByLimit(string fields, string table, string where, string orderBy, string limit)
+        public async Task<SqlDataSet> SelectWhereOrderByLimitAsync(string Table, string Fields, string Where, string OrderBy, string Limit)
         {
-            return CreateAndRunCommand(MySQLCommands.SelectWhereOrderByLimit, fields, where, table, orderBy, limit);
+            return await GetDataAsync(MySqlCommands.SelectWhereOrderByLimit, Fields, Table, Where, OrderBy, Limit);
         }
 
-        public int SelectLastInt(string table, string field)
+        public async Task<int> SelectHighestAsync(string Table, string Field)
         {
-            MySqlDataReader reader = SelectOrderByLimit(field, table, field + " DESC", "1");
-            while (reader.Read())
-            {
-                int i = (int)reader.GetValue(0);
-                reader.Close();
-                return i;
-            }
+            object obj = (await SelectOrderByLimitAsync(Table, Field, Field + " DESC", "1")).Data[0][0];
+            if (obj != null && obj is int) return (int)obj;
             return -1;
         }
 
-        public int Insert(string table, string fields, params object[] values)
+        public async Task<int> InsertAsync(string Table, string Fields, params object[] Values)
         {
-            return CreateAndRunInsert(values, table, fields);
+            return await CreateAndRunInsertAsync(Values, Table, Fields);
         }
 
-        public String GetMySQLFormattedTime(TimeSpan ts)
+        public async Task<int> DeleteAsync(string Table, string Where)
         {
-            return ts.ToString();
+            return await CreateAndRunDeleteAsync(Table, Where);
         }
 
-        public MySqlDataReader RunCommand(MySqlCommand command)
+        public async Task<int> UpdateAsync(string Table, string Fields, string Where, params object[] Values)
         {
-            return command.ExecuteReader();
+            return await CreateAndRunUpdateAsync(Table, Where, SqlUtility.ToArrayFromCommas(Fields), Values);
         }
 
-        public async Task<MySqlDataReader> RunCommandAsync(MySqlCommand command)
+        #endregion
+
+        public async Task<ConnectedMySqlDataReader> RunCommandAsync(MySqlConnection connection, MySqlCommand command)
         {
-            return await command.ExecuteReaderAsync() as MySqlDataReader;
+            return new ConnectedMySqlDataReader(connection, await command.ExecuteReaderAsync() as MySqlDataReader);
         }
 
-        public int RunInsert(MySqlCommand command)
+        public async Task<ConnectedMySqlDataReader> CreateAndRunCommandAsync(string command, params string[] args)
         {
-            return command.ExecuteNonQuery();
+            MySqlConnection connection = await ConnectAsync();
+            return await RunCommandAsync(connection, MySqlCommands.CreateCommand(connection, command, args));
         }
 
-        public MySqlDataReader CreateAndRunCommand(string command, params string[] args)
+        public async Task<int> CreateAndRunInsertAsync(object[] values, string table, string fields)
         {
-            return RunCommand(MySQLCommands.CreateCommand(Connect(), command, args));
+            return await MySqlCommands.CreateInsert(await ConnectAsync(), table, fields, values).ExecuteNonQueryAsync();
         }
 
-        public async Task<MySqlDataReader> CreateAndRunCommandAsync(string command, params string[] args)
+        public async Task<int> CreateAndRunDeleteAsync(string table, string where)
         {
-            return await RunCommandAsync(MySQLCommands.CreateCommand(await ConnectAsync(), command, args));
+            return await MySqlCommands.CreateDelete(await ConnectAsync(), table, where).ExecuteNonQueryAsync();
         }
 
-        public int CreateAndRunInsert(object[] values, string table, string fields)
+        public async Task<int> CreateAndRunUpdateAsync(string table, string where, string[] fields, params object[] values)
         {
-            return RunInsert(MySQLCommands.CreateInsert(Connect(), table, fields, values));
+            return await MySqlCommands.CreateUpdate(await ConnectAsync(), table, where, fields, values).ExecuteNonQueryAsync();
         }
 
-        public static string AppendWithCommas(params string[] strings)
+        public async Task<SqlDataSet> GetDataAsync(string command, params string[] args)
         {
-            string s = "";
-            for(int i = 0; i < strings.Length; i++)
-            {
-                s = s + strings[i];
-                if (i != strings.Length - 1) s = s + ", ";
-            }
-            return s;
-        }
-
-        public void PrintReader(MySqlDataReader reader)
-        {
-            while (reader.Read())
-            {
-                for(int i = 0; i < reader.FieldCount; i++)
-                {
-                    Console.Write(reader.GetValue(i) + " ");
-                }
-                Console.WriteLine();
-            }
-            reader.Close();
+            return await SqlDataSet.FromMySqlDataReaderAsync(await CreateAndRunCommandAsync(command, args));
         }
     }
 
-    public class MySQLCommands
+    public class MySqlCommands : SqlCommands
     {
-        public static string Select = "SELECT {0} FROM {1}";
-        public static string SelectWhere = Select + " WHERE {2}";
-        public static string SelectOrderBy = Select + " ORDER BY {2}";
-        public static string SelectOrderByLimit = SelectOrderBy + " LIMIT {3}";
-        public static string SelectWhereOrderBy = SelectWhere + " ORDER BY {3}";
-        public static string SelectWhereOrderByLimit = SelectWhereOrderBy + " LIMIT {4}";
-        public static string Insert = "INSERT INTO {0} ({1}) VALUES ({2})";
-
         public static MySqlCommand CreateCommand(MySqlConnection connection, string command, params string[] args)
         {
             MySqlCommand comm = new MySqlCommand(string.Format(command, args));
@@ -242,6 +253,33 @@ namespace Personaleinsatzplanung.SQL
             }
             comm.Connection = connection;
             return comm;
+        }
+
+        public static MySqlCommand CreateDelete(MySqlConnection connection, string table, string where)
+        {
+            MySqlCommand command = new MySqlCommand(string.Format(Delete, table, where));
+            command.Connection = connection;
+            return command;
+        }
+
+        public static MySqlCommand CreateUpdate(MySqlConnection connection, string table, string where, string[] fields, object[] values)
+        {
+            MySqlCommand command = new MySqlCommand(string.Format(Update, table, SqlUtility.GenerateSets(fields), where));
+            for(int i = 0; i < fields.Length; i++)
+            {
+                MySqlDbType type = MySqlDbType.VarChar;
+                object o = values[i];
+                if (o is string) type = MySqlDbType.VarChar;
+                else if (o is int) type = MySqlDbType.Int32;
+                else if (o is TimeSpan) type = MySqlDbType.Time;
+                else if (o is DateTime) type = MySqlDbType.DateTime;
+                else if (o is bool) type = MySqlDbType.Bit;
+                else if (o is decimal) type = MySqlDbType.Decimal;
+                command.Parameters.Add("?" + fields[i], type).Value = values[i];
+            }
+            command.Connection = connection;
+            Console.WriteLine(command.CommandText);
+            return command;
         }
     }
 }

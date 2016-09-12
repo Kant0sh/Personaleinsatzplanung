@@ -110,7 +110,7 @@ namespace Personaleinsatzplanung.Models
         {
             get
             {
-                return MySQLHandler.AppendWithCommas(FieldId, FieldKennung, FieldName, FieldVorname, FieldFähigkeiten, FieldSchicht, FieldTelefon, FieldMobil, FieldTelefonIntern, FieldFaxIntern, FieldEMail);
+                return SqlUtility.AppendWithCommas(FieldId, FieldKennung, FieldName, FieldVorname, FieldFähigkeiten, FieldSchicht, FieldTelefon, FieldMobil, FieldTelefonIntern, FieldFaxIntern, FieldEMail);
             }
         }
 
@@ -122,9 +122,9 @@ namespace Personaleinsatzplanung.Models
             }
         }
 
-        public void Save(MySQLHandler Sql)
+        public async void Save(MySQLHandler Sql)
         {
-            Sql.Insert(Table, InsertFields, InsertValues);
+            await Sql.InsertAsync(Table, InsertFields, InsertValues);
         }
 
         int _id;
@@ -183,20 +183,6 @@ namespace Personaleinsatzplanung.Models
             }
         }
 
-        List<Adresse> _adressen;
-        public List<Adresse> Adressen
-        {
-            get
-            {
-                return _adressen;
-            }
-            set
-            {
-                _adressen = value;
-                OnPropertyChanged();
-            }
-        }
-
         string _fähigkeiten;
         public string Fähigkeiten
         {
@@ -236,6 +222,38 @@ namespace Personaleinsatzplanung.Models
             {
                 _kontakt = value;
                 OnPropertyChanged();
+            }
+        }
+
+        List<Adresse> _adressen;
+        public List<Adresse> Adressen
+        {
+            get
+            {
+                return _adressen;
+            }
+            set
+            {
+                _adressen = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public void AddRufnummer(Rufnummer rufnummer)
+        {
+            if (Kontakt == null) Kontakt = new Kontakt();
+            if(Kontakt.GetRufnummer(rufnummer.Typ) == null)
+            {
+                Kontakt.Rufnummern.Add(rufnummer);
+            }
+        }
+
+        public void AddEmail(string email)
+        {
+            if (Kontakt == null) Kontakt = new Kontakt();
+            if (Kontakt.EMail == null || Kontakt.EMail.Trim() == string.Empty)
+            {
+                Kontakt.EMail = email;
             }
         }
 

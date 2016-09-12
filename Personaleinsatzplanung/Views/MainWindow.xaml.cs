@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using Personaleinsatzplanung.SQL;
 using System.Configuration;
 using Telerik.Windows.Controls;
+using Personaleinsatzplanung.Models;
 
 namespace Personaleinsatzplanung.Views
 {
@@ -28,10 +29,10 @@ namespace Personaleinsatzplanung.Views
             InitializeComponent();
 
             MySQLHandler sql = new MySQLHandler("127.0.0.1", "root", "password", "pep");
-            new AusfallzeitHinzufügen(sql).Show();
+            //new AusfallzeitHinzufügen(sql).Show();
             //new SchichtmodellErstellen(sql).Show();
             //new MitarbeiterErfassen(sql).Show();
-            Close();
+            //Close();
         }
     }
 }

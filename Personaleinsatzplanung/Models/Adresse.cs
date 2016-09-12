@@ -8,9 +8,23 @@ using System.Threading.Tasks;
 
 namespace Personaleinsatzplanung.Models
 {
+    /// <summary>
+    /// Repräsentiert eine Adresse aus der DB
+    /// </summary>
+    /// <seealso cref="Personaleinsatzplanung.Models.Model" />
     public class Adresse : Model
     {
 
+        #region SQL Felder
+
+        // Alle Feldernamen werden in der Database.config definiert
+
+        /// <summary>
+        /// Gibt den Namen der verknüpften Tabelle in der Datenbank aus.
+        /// </summary>
+        /// <value>
+        /// Tabellenname
+        /// </value>
         public static string Table
         {
             get
@@ -19,6 +33,12 @@ namespace Personaleinsatzplanung.Models
             }
         }
 
+        /// <summary>
+        /// Gibt den Namen des Feldes "Id" in der Datenbank aus.
+        /// </summary>
+        /// <value>
+        /// Feldname Id
+        /// </value>
         public static string FieldId
         {
             get
@@ -27,6 +47,12 @@ namespace Personaleinsatzplanung.Models
             }
         }
 
+        /// <summary>
+        /// Gibt den Namen des Feldes "Land" in der Datenbank aus.
+        /// </summary>
+        /// <value>
+        /// Feldname Land
+        /// </value>
         public static string FieldLand
         {
             get
@@ -35,6 +61,12 @@ namespace Personaleinsatzplanung.Models
             }
         }
 
+        /// <summary>
+        /// Gibt den Namen des Feldes "Stadt" in der Datenbank aus.
+        /// </summary>
+        /// <value>
+        /// Feldname Stadt
+        /// </value>
         public static string FieldStadt
         {
             get
@@ -43,6 +75,12 @@ namespace Personaleinsatzplanung.Models
             }
         }
 
+        /// <summary>
+        /// Gibt den Namen des Feldes "Postleitzahl" in der Datenbank aus.
+        /// </summary>
+        /// <value>
+        /// Feldname Postleitzahl
+        /// </value>
         public static string FieldPostleitzahl
         {
             get
@@ -51,6 +89,12 @@ namespace Personaleinsatzplanung.Models
             }
         }
 
+        /// <summary>
+        /// Gibt den Namen des Feldes "Straße" in der Datenbank aus.
+        /// </summary>
+        /// <value>
+        /// Feldname Straße
+        /// </value>
         public static string FieldStraße
         {
             get
@@ -59,6 +103,12 @@ namespace Personaleinsatzplanung.Models
             }
         }
 
+        /// <summary>
+        /// Gibt den Namen des Feldes "Hausnummer" in der Datenbank aus.
+        /// </summary>
+        /// <value>
+        /// Feldname Hausnummer
+        /// </value>
         public static string FieldHausnummer
         {
             get
@@ -67,6 +117,12 @@ namespace Personaleinsatzplanung.Models
             }
         }
 
+        /// <summary>
+        /// Gibt den Namen des Feldes "Adresszusatz" in der Datenbank aus.
+        /// </summary>
+        /// <value>
+        /// Feldname Adresszusatz
+        /// </value>
         public static string FieldAdresszusatz
         {
             get
@@ -75,6 +131,12 @@ namespace Personaleinsatzplanung.Models
             }
         }
 
+        /// <summary>
+        /// Gibt den Namen des Feldes "Auftraggeber" in der Datenbank aus.
+        /// </summary>
+        /// <value>
+        /// Feldname Auftraggeber
+        /// </value>
         public static string FieldAuftraggeber
         {
             get
@@ -83,6 +145,12 @@ namespace Personaleinsatzplanung.Models
             }
         }
 
+        /// <summary>
+        /// Gibt den Namen des Feldes "Mitarbeiter" in der Datenbank aus.
+        /// </summary>
+        /// <value>
+        /// Feldname Mitarbeiter
+        /// </value>
         public static string FieldMitarbeiter
         {
             get
@@ -91,6 +159,12 @@ namespace Personaleinsatzplanung.Models
             }
         }
 
+        /// <summary>
+        /// Gibt den Namen des Feldes "Adresstyp" in der Datenbank aus.
+        /// </summary>
+        /// <value>
+        /// Feldname Adresstyp
+        /// </value>
         public static string FieldAdresstyp
         {
             get
@@ -99,82 +173,15 @@ namespace Personaleinsatzplanung.Models
             }
         }
 
-        public string InsertFields
-        {
-            get
-            {
-                return MySQLHandler.AppendWithCommas(FieldId, FieldLand, FieldStadt, FieldPostleitzahl, FieldStraße, FieldHausnummer, FieldAdresszusatz, FieldAuftraggeber, FieldMitarbeiter, FieldAdresstyp);
-            }
-        }
+        #endregion
 
-        public object[] InsertValues
-        {
-            get
-            {
-                return new object[10] { Id, Land, Stadt, Postleitzahl, Straße, Hausnummer, Adresszusatz, Auftraggeber, Mitarbeiter, Typ };
-            }
-        }
+        #region SQL Methoden
 
-        public void Save(MySQLHandler Sql)
-        {
-            Sql.Insert(Table, InsertFields, InsertValues);
-        }
 
-        public static MySqlDataReader LoadAll(MySQLHandler sql)
-        {
-            return sql.SelectAll(Table);
-        }
 
-        public static MySqlDataReader Load(MySQLHandler sql, string where)
-        {
-            if (where == string.Empty) return sql.SelectAll(Table);
-            return sql.SelectAllWhere(Table, where);
-        }
+        #endregion
 
-        public static MySqlDataReader Load(MySQLHandler sql, string fields, string where)
-        {
-            if (where == string.Empty) return sql.Select(Table, fields);
-            return sql.SelectWhere(fields, Table, where);
-        }
-
-        public async static Task<MySqlDataReader> LoadAsync(MySQLHandler sql, string where)
-        {
-            if (where == string.Empty) return await sql.SelectAllAsync(Table);
-            return await sql.SelectAllWhereAsync(Table, where);
-        }
-
-        public async static Task<MySqlDataReader> LoadAllAsync(MySQLHandler sql)
-        {
-            return await sql.SelectAllAsync(Table);
-        }
-
-        public static async Task<List<Adresse>> LoadListAsync(MySQLHandler sql, string where)
-        {
-            MySqlDataReader reader = await LoadAsync(sql, where);
-            List<Adresse> adressen = new List<Adresse>();
-            while (await reader.ReadAsync())
-            {
-                Adresse adresse = new Adresse();
-                for(int i = 0; i < reader.FieldCount; i++)
-                {
-                    object val = await reader.GetFieldValueAsync<object>(i);
-                    if (!(val is DBNull))
-                    {
-                        string name = reader.GetName(i);
-                        if (name == FieldId) adresse.Id = (int)val;
-                        else if (name == FieldLand) adresse.Land = (string)val;
-                        else if (name == FieldStadt) adresse.Stadt = (string)val;
-                        else if (name == FieldPostleitzahl) adresse.Postleitzahl = (string)val;
-                        else if (name == FieldStraße) adresse.Straße = (string)val;
-                        else if (name == FieldHausnummer) adresse.Hausnummer = (string)val;
-                        else if (name == FieldAdresszusatz) adresse.Adresszusatz = (string)val;
-                        else if (name == FieldAdresstyp) adresse.Typ = await AdressTyp.LoadAsync(sql, (int)val);
-                    }
-                }
-                adressen.Add(adresse);
-            }
-            return adressen;
-        }
+        #region Felder
 
         int _id;
         public int Id
@@ -307,23 +314,33 @@ namespace Personaleinsatzplanung.Models
             }
         }
 
-        AdressTyp _typ;
-        public AdressTyp Typ
+        int _adresstyp;
+        public int Adresstyp
         {
             get
             {
-                return _typ;
+                return _adresstyp;
             }
             set
             {
-                _typ = value;
+                _adresstyp = value;
                 OnPropertyChanged();
             }
         }
 
+        #endregion
+
+        #region Constructor
+
+        /// <summary>
+        /// Initialisiert eine leere Instanz der <see cref="Adresse"/> klasse.
+        /// </summary>
         public Adresse() { }
 
-        public Adresse(string Land, string Stadt, string Postleitzahl, string Straße, string Hausnummer, string Adresszusatz)
+        /// <summary>
+        /// Initialisiert eine Instanz der <see cref="Adresse"/> klasse mit allen Parametern.
+        /// </summary>
+        public Adresse(string Land, string Stadt, string Postleitzahl, string Straße, string Hausnummer, string Adresszusatz, Auftraggeber Auftraggeber, Mitarbeiter Mitarbeiter, int Adresstyp)
         {
             this.Land = Land;
             this.Stadt = Stadt;
@@ -331,6 +348,26 @@ namespace Personaleinsatzplanung.Models
             this.Straße = Straße;
             this.Hausnummer = Hausnummer;
             this.Adresszusatz = Adresszusatz;
+            this.Auftraggeber = Auftraggeber;
+            this.Mitarbeiter = Mitarbeiter;
+            this.Adresstyp = Adresstyp;
         }
+
+        #endregion
+
     }
+
+    public enum AdresstypMitarbeiter
+    {
+        Privat,
+        Zweitadresse,
+        Büro
+    }
+
+    public enum AdresstypAuftraggeber
+    {
+        Lieferadresse,
+        Rechnungsadresse
+    }
+
 }

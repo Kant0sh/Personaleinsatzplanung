@@ -96,6 +96,12 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Calendar\CalendarUtil.cs" />
+    <Compile Include="CustomControls\AdressBox.xaml.cs">
+      <DependentUpon>AdressBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CustomControls\AdressBox_Appending.xaml.cs">
+      <DependentUpon>AdressBox_Appending.xaml</DependentUpon>
+    </Compile>
     <Compile Include="CustomControls\LabelledAutoCompleteBox.xaml.cs">
       <DependentUpon>LabelledAutoCompleteBox.xaml</DependentUpon>
     </Compile>
@@ -112,7 +118,6 @@
       <DependentUpon>TimePicker_VonBis.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\Adresse.cs" />
-    <Compile Include="Models\AdressTyp.cs" />
     <Compile Include="Models\Auftrag.cs" />
     <Compile Include="Models\Auftraggeber.cs" />
     <Compile Include="Models\Auftragsart.cs" />
@@ -124,6 +129,13 @@
     <Compile Include="Models\Schicht.cs" />
     <Compile Include="Models\Schichtzeit.cs" />
     <Compile Include="Models\Sollzeit.cs" />
+    <Compile Include="SQL\ConnectedMySqlDataReader.cs" />
+    <Compile Include="SQL\InformixOdbcHandler.cs" />
+    <Compile Include="SQL\ISqlHandler.cs" />
+    <Compile Include="SQL\SqlCommands.cs" />
+    <Compile Include="SQL\SqlDataSet.cs" />
+    <Compile Include="SQL\SqlUtility.cs" />
+    <Compile Include="ViewModels\AdressBoxViewModel.cs" />
     <Compile Include="ViewModels\AusfallzeitHinzufügenViewModel.cs" />
     <Compile Include="ViewModels\MitarbeiterErfassenViewModel.cs" />
     <Compile Include="Views\MitarbeiterErfassen.xaml.cs">
@@ -133,6 +145,14 @@
       <DependentUpon>SchichtmodellErstellen.xaml</DependentUpon>
     </Compile>
     <Compile Include="SQL\MySQLHandler.cs" />
+    <Page Include="CustomControls\AdressBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CustomControls\AdressBox_Appending.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="CustomControls\DateTimePicker_VonBis.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

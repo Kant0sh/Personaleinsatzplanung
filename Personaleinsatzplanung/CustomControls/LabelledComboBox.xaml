@@ -11,7 +11,7 @@
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <Label Name="lbl" Height="20" Padding="3,0" VerticalContentAlignment="Center" Content="Label:" Grid.Column="0" VerticalAlignment="Top"/>
+        <Label Name="lbl" Width="{Binding Path=LabelWidth, RelativeSource={RelativeSource FindAncestor, AncestorType=local:LabelledComboBox, AncestorLevel=1}}" Height="20" Padding="3,0" VerticalContentAlignment="Center" Content="Label:" Grid.Column="0" VerticalAlignment="Top"/>
         <ComboBox Name="comboBox" Grid.Column="1" MinWidth="{DynamicResource InputBoxMinWidth}" SelectedItem="{Binding Path=SelectedItem, RelativeSource={RelativeSource FindAncestor, AncestorType=local:LabelledComboBox, AncestorLevel=1}}" Height="{DynamicResource InputBoxMinHeight}" VerticalAlignment="Top" Margin="10,0,0,0" MinHeight="{DynamicResource InputBoxMinHeight}"/>
     </Grid>
 </UserControl>

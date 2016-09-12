@@ -58,25 +58,6 @@ namespace Personaleinsatzplanung.Views
             mainStack.Children[8].Visibility = Visibility.Collapsed;
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            if (textBox.Text.Trim() == string.Empty) return;
-            sql.Insert("schichten", "bezeichnung", textBox.Text.Trim());
-            int schichtId = sql.SelectLastInt("schichten", "schicht_id");
-            foreach (LabelledStackPanel panel in mainStack.Children)
-            {
-                if (panel.Visibility == Visibility.Visible)
-                {
-                    int i = mainStack.Children.IndexOf(panel);
-                    for (int j = 1; j < panel.Children.Count; j++)
-                    {
-                        TimePicker_VonBis_Appending tp = panel.Children[j] as TimePicker_VonBis_Appending;
-                        if (tp.Von != null && tp.Bis != null) sql.Insert("schichtzeiten", "schicht_id, tag_index, beginn, ende", schichtId, i, sql.GetMySQLFormattedTime((TimeSpan)tp.Von), sql.GetMySQLFormattedTime(((TimeSpan)tp.Bis)));
-                    }
-                }
-            }
-        }
-
         private void RadioButton0_Checked(object sender, RoutedEventArgs e)
         {
             // Einzeln Erstellen

@@ -27,12 +27,7 @@
             </StackPanel>
         </GroupBox>
         <GroupBox Header="Adresse" Grid.Row="1">
-            <StackPanel>
-                <CustomControls:LabelledTextBox LabelText="Stadt:" Text="{Binding Path=Stadt, Mode=TwoWay}" x:Name="stadt" LabelWidth="80" Margin="0,0,0,5"/>
-                <CustomControls:LabelledTextBox LabelText="Postleitzahl:" Text="{Binding Path=Postleitzahl, Mode=TwoWay}" x:Name="plz" LabelWidth="80" Margin="0,0,0,5"/>
-                <CustomControls:LabelledTextBox LabelText="Straße:" Text="{Binding Path=Straße, Mode=TwoWay}" x:Name="straße" LabelWidth="80" Margin="0,0,0,5"/>
-                <CustomControls:LabelledTextBox LabelText="Hausnummer:" Text="{Binding Path=Hausnummer, Mode=TwoWay}" x:Name="hausnummer" LabelWidth="80"/>
-            </StackPanel>
+            <CustomControls:AdressBox ShowLand="False" ShowZusatz="False" TextBoxMarginBot="5" LabelWidth="80"/>
         </GroupBox>
         <CustomControls:LabelledTextBox LabelText="Fähigkeiten:" Text="{Binding Path=Fähigkeiten, Mode=TwoWay}" x:Name="faehigkeiten" Grid.Row="2" Grid.ColumnSpan="1" LabelWidth="80" Margin="6,10,6,0"/>
         <GroupBox Header="Kontakt" Grid.Column="1" Grid.RowSpan="2" Margin="10,0,0,0">

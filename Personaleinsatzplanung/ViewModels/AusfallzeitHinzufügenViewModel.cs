@@ -29,24 +29,24 @@ namespace Personaleinsatzplanung.ViewModels
 
         public AusfallzeitHinzufügenViewModel(MySQLHandler sql)
         {
-            MySqlDataReader reader = sql.Select(Mitarbeiter.Table, MySQLHandler.AppendWithCommas(Mitarbeiter.FieldId, Mitarbeiter.FieldKennung, Mitarbeiter.FieldName, Mitarbeiter.FieldVorname, Mitarbeiter.FieldFähigkeiten));
+            //MySqlDataReader reader = sql.Select(Mitarbeiter.Table, MySQLHandler.AppendWithCommas(Mitarbeiter.FieldId, Mitarbeiter.FieldKennung, Mitarbeiter.FieldName, Mitarbeiter.FieldVorname, Mitarbeiter.FieldFähigkeiten));
 
-            while (reader.Read())
-            {
-                Mitarbeiter mitarbeiter = new Mitarbeiter();
-                for (int i = 0; i < reader.FieldCount; i++)
-                {
-                    object val = reader.GetValue(i);
-                    string name = reader.GetName(i);
-                    if (name == Mitarbeiter.FieldId) mitarbeiter.Id = (int)val;
-                    else if (name == Mitarbeiter.FieldKennung) mitarbeiter.Kennung = (string)val;
-                    else if (name == Mitarbeiter.FieldName) mitarbeiter.Name = (string)val;
-                    else if (name == Mitarbeiter.FieldVorname) mitarbeiter.Vorname = (string)val;
-                    else if (name == Mitarbeiter.FieldFähigkeiten) mitarbeiter.Fähigkeiten = (string)val;
-                }
-                MitarbeiterList.Add(new MitarbeiterViewModel(mitarbeiter));
-            }
-            reader.Close();
+            //while (reader.Read())
+            //{
+            //    Mitarbeiter mitarbeiter = new Mitarbeiter();
+            //    for (int i = 0; i < reader.FieldCount; i++)
+            //    {
+            //        object val = reader.GetValue(i);
+            //        string name = reader.GetName(i);
+            //        if (name == Mitarbeiter.FieldId) mitarbeiter.Id = (int)val;
+            //        else if (name == Mitarbeiter.FieldKennung) mitarbeiter.Kennung = (string)val;
+            //        else if (name == Mitarbeiter.FieldName) mitarbeiter.Name = (string)val;
+            //        else if (name == Mitarbeiter.FieldVorname) mitarbeiter.Vorname = (string)val;
+            //        else if (name == Mitarbeiter.FieldFähigkeiten) mitarbeiter.Fähigkeiten = (string)val;
+            //    }
+            //    MitarbeiterList.Add(new MitarbeiterViewModel(mitarbeiter));
+            //}
+            //reader.Close();
         }
     }
 }
