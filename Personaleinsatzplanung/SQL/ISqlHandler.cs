@@ -9,11 +9,12 @@ namespace Personaleinsatzplanung.SQL
 {
     public interface ISqlHandler
     {
-        string ServerUrl { get; set; }
+        string Server { get; set; }
         string UserId { get; set; }
         string Password { get; set; }
         string Database { get; set; }
         string Driver { get; set; }
+        string Service { get; set; }
         string Host { get; set; }
 
         string ConnectionString { get; }

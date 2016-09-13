@@ -15,21 +15,21 @@ namespace Personaleinsatzplanung.SQL
         {
             get
             {
-                return "server=" + ServerUrl + ";uid=" + UserId + ";pwd=" + Password + ";database=" + Database + ";";
+                return "server=" + Server + ";uid=" + UserId + ";pwd=" + Password + ";database=" + Database + ";";
             }
         }
 
-        string _serverUrl;
-        public string ServerUrl
+        string _server;
+        public string Server
         {
             get
             {
-                return _serverUrl;
+                return _server;
             }
 
             set
             {
-                _serverUrl = value;
+                _server = value;
             }
         }
 
@@ -79,9 +79,11 @@ namespace Personaleinsatzplanung.SQL
 
         public string Host { get; set; }
 
-        public MySQLHandler(string serverUrl, string userId, string password, string database)
+        public string Service { get; set; }
+
+        public MySQLHandler(string server, string userId, string password, string database)
         {
-            ServerUrl = serverUrl;
+            Server = server;
             UserId = userId;
             Password = password;
             Database = database;

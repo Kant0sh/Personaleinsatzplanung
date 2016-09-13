@@ -130,7 +130,8 @@
     <Compile Include="Models\Schichtzeit.cs" />
     <Compile Include="Models\Sollzeit.cs" />
     <Compile Include="SQL\ConnectedMySqlDataReader.cs" />
-    <Compile Include="SQL\InformixOdbcHandler.cs" />
+    <Compile Include="SQL\ConnectedOdbcDataReader.cs" />
+    <Compile Include="SQL\OdbcHandler.cs" />
     <Compile Include="SQL\ISqlHandler.cs" />
     <Compile Include="SQL\SqlCommands.cs" />
     <Compile Include="SQL\SqlDataSet.cs" />

@@ -121,5 +121,23 @@ namespace Personaleinsatzplanung.SQL
             await Reader.CloseAsync();
             return Data;
         }
+
+        public async static Task<SqlDataSet> FromOdbcDataReaderAsync(ConnectedOdbcDataReader Reader)
+        {
+            SqlDataSet Data = new SqlDataSet();
+            while (await Reader.Reader.ReadAsync())
+            {
+                string[] fieldNames = new string[Reader.Reader.FieldCount];
+                object[] data = new object[Reader.Reader.FieldCount];
+                for (int i = 0; i < Reader.Reader.FieldCount; i++)
+                {
+                    fieldNames[i] = Reader.Reader.GetName(i);
+                    data[i] = await Reader.Reader.GetFieldValueAsync<object>(i);
+                }
+                Data.AddData(fieldNames, data);
+            }
+            Reader.Close();
+            return Data;
+        }
     }
 }
