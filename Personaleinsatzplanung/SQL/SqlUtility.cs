@@ -42,9 +42,20 @@ namespace Personaleinsatzplanung.SQL
             string s = string.Empty;
             for(int i = 0; i < fields.Length; i++)
             {
-                s = s + fields[i] + "=?" + fields[i] + ", ";
+                s = s + fields[i] + "=@" + fields[i] + ", ";
             }
             s = s.Substring(0, s.Length-2);
+            return s;
+        }
+
+        public static string GenerateInsertParameters(string[] fields)
+        {
+            string s = string.Empty;
+            for(int i = 0; i < fields.Length; i++)
+            {
+                s = s + "?, ";
+            }
+            s = s.Substring(0, s.Length - 2);
             return s;
         }
 

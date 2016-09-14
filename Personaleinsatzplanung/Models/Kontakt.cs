@@ -28,7 +28,7 @@ namespace Personaleinsatzplanung.Models
             {
                 if (r.Typ == Typ) return r;
             }
-            return null;
+            return new Rufnummer();
         }
 
         string _eMail;

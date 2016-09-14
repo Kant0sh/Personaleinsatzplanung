@@ -113,11 +113,7 @@ namespace Personaleinsatzplanung.SQL
 
         public async Task<SqlDataSet> SelectAllAsync(string Table)
         {
-            MySqlCommand command = new MySqlCommand();
-            command.CommandType = CommandType.TableDirect;
-            MySqlConnection connection = await ConnectAsync();
-            command.Connection = connection;
-            return await SqlDataSet.FromMySqlDataReaderAsync(await RunCommandAsync(connection, command));
+            return await GetDataAsync(MySqlCommands.Select, SqlUtility.All, Table);
         }
 
         public async Task<SqlDataSet> SelectAllWhereAsync(string Table, string Where)
@@ -239,19 +235,18 @@ namespace Personaleinsatzplanung.SQL
                 valDefString += s + ", ";
             }
             valDefString = valDefString.Substring(0, valDefString.Length - 2);
-            List<object> argList = args.ToList();
             MySqlCommand comm = new MySqlCommand(string.Format(Insert, table, fields, valDefString));
-            for(int i = 0; i < argList.Count; i++)
+            for(int i = 0; i < args.Length; i++)
             {
                 MySqlDbType type = MySqlDbType.VarChar;
-                object o = argList[i];
+                object o = args[i];
                 if (o is string) type = MySqlDbType.VarChar;
                 else if (o is int) type = MySqlDbType.Int32;
                 else if (o is TimeSpan) type = MySqlDbType.Time;
                 else if (o is DateTime) type = MySqlDbType.DateTime;
                 else if (o is bool) type = MySqlDbType.Bit;
                 else if (o is decimal) type = MySqlDbType.Decimal;
-                comm.Parameters.Add(valueDefinitions[i], type).Value = argList[i];
+                comm.Parameters.Add(valueDefinitions[i], type).Value = args[i];
             }
             comm.Connection = connection;
             return comm;

@@ -19,7 +19,7 @@ namespace Personaleinsatzplanung.SQL
 
         public OdbcHandler(string DSN)
         {
-            this.Driver = Driver;
+            this.Driver = DSN;
         }
         
         string _driver;
@@ -50,7 +50,6 @@ namespace Personaleinsatzplanung.SQL
 
         public async Task<OdbcConnection> ConnectAsync()
         {
-            Console.WriteLine(ConnectionString);
             OdbcConnection connection = new OdbcConnection();
             connection.ConnectionString = ConnectionString;
             try
@@ -76,11 +75,7 @@ namespace Personaleinsatzplanung.SQL
 
         public async Task<SqlDataSet> SelectAllAsync(string Table)
         {
-            OdbcCommand command = new OdbcCommand();
-            command.CommandType = System.Data.CommandType.TableDirect;
-            OdbcConnection connection = await ConnectAsync();
-            command.Connection = connection;
-            return await SqlDataSet.FromOdbcDataReaderAsync(await RunCommandAsync(connection, command));
+            return await GetDataAsync(OdbcCommands.Select, SqlUtility.All, Table);
         }
 
         public async Task<SqlDataSet> SelectAllOrderByAsync(string Table, string OrderBy)
@@ -153,7 +148,7 @@ namespace Personaleinsatzplanung.SQL
 
         public async Task<int> CreateAndRunInsertAsync(object[] values, string table, string fields)
         {
-            return await OdbcCommands.CreateInsert(await ConnectAsync(), table, fields, values).ExecuteNonQueryAsync();
+            return await OdbcCommands.CreateInsert(await ConnectAsync(), table, SqlUtility.ToArrayFromCommas(fields), values).ExecuteNonQueryAsync();
         }
 
         public async Task<int> CreateAndRunDeleteAsync(string table, string where)
@@ -168,7 +163,7 @@ namespace Personaleinsatzplanung.SQL
 
         public async Task<SqlDataSet> GetDataAsync(string command, params string[] args)
         {
-            return await SqlDataSet.FromOdbcDataReaderAsync(await CreateAndRunCommandAsync(command, args));
+            return SqlDataSet.FromOdbcDataReader(await CreateAndRunCommandAsync(command, args));
         }
     }
 
@@ -181,33 +176,12 @@ namespace Personaleinsatzplanung.SQL
             return comm;
         }
 
-        public static OdbcCommand CreateInsert(OdbcConnection connection, string table, string fields, params object[] args)
+        public static OdbcCommand CreateInsert(OdbcConnection connection, string table, string[] fields, params object[] args)
         {
-            string[] tmpValueDefinitions = fields.Split(',');
-            string[] valueDefinitions = new string[tmpValueDefinitions.Length];
-            for (int i = 0; i < tmpValueDefinitions.Length; i++)
+            OdbcCommand comm = new OdbcCommand(string.Format(Insert, table, SqlUtility.AppendWithCommas(fields), SqlUtility.GenerateInsertParameters(fields)));
+            for (int i = 0; i < args.Length; i++)
             {
-                valueDefinitions[i] = "?" + tmpValueDefinitions[i].Trim();
-            }
-            string valDefString = string.Empty;
-            foreach (string s in valueDefinitions)
-            {
-                valDefString += s + ", ";
-            }
-            valDefString = valDefString.Substring(0, valDefString.Length - 2);
-            List<object> argList = args.ToList();
-            OdbcCommand comm = new OdbcCommand(string.Format(Insert, table, fields, valDefString));
-            for (int i = 0; i < argList.Count; i++)
-            {
-                OdbcType type = OdbcType.VarChar;
-                object o = argList[i];
-                if (o is string) type = OdbcType.VarChar;
-                else if (o is int) type = OdbcType.Int;
-                else if (o is TimeSpan) type = OdbcType.Time;
-                else if (o is DateTime) type = OdbcType.DateTime;
-                else if (o is bool) type = OdbcType.Bit;
-                else if (o is decimal) type = OdbcType.Decimal;
-                comm.Parameters.Add(valueDefinitions[i], type).Value = argList[i];
+                comm.Parameters.Add(new OdbcParameter() { Value = args[i] });
             }
             comm.Connection = connection;
             return comm;
@@ -233,10 +207,9 @@ namespace Personaleinsatzplanung.SQL
                 else if (o is DateTime) type = OdbcType.DateTime;
                 else if (o is bool) type = OdbcType.Bit;
                 else if (o is decimal) type = OdbcType.Decimal;
-                command.Parameters.Add("?" + fields[i], type).Value = values[i];
+                command.Parameters.Add("@" + fields[i], type).Value = values[i];
             }
             command.Connection = connection;
-            Console.WriteLine(command.CommandText);
             return command;
         }
     }

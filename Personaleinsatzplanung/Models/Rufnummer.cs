@@ -13,6 +13,7 @@ namespace Personaleinsatzplanung.Models
         {
             get
             {
+                if (_nummer == null) return "";
                 return _nummer;
             }
             set

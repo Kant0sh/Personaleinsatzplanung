@@ -29,7 +29,7 @@ namespace Personaleinsatzplanung.Views
             InitializeComponent();
 
             MySQLHandler sql = new MySQLHandler("127.0.0.1", "root", "password", "pep");
-            OdbcHandler sqlOdbc = new OdbcHandler("AUPOSGLAS");
+            OdbcHandler sqlOdbc = new OdbcHandler("LOCALMYSQLANSI");
             //new AusfallzeitHinzufügen(sql).Show();
             //new SchichtmodellErstellen(sql).Show();
             //new MitarbeiterErfassen(sql).Show();

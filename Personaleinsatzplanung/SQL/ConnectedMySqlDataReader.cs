@@ -42,6 +42,12 @@ namespace Personaleinsatzplanung.SQL
             await Connection.CloseAsync();
         }
 
+        public void Close()
+        {
+            Reader.Close();
+            Connection.Close();
+        }
+
         public ConnectedMySqlDataReader(MySqlConnection Connection, MySqlDataReader Reader)
         {
             this.Connection = Connection;

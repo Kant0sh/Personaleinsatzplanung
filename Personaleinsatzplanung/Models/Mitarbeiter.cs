@@ -110,7 +110,7 @@ namespace Personaleinsatzplanung.Models
         {
             get
             {
-                return SqlUtility.AppendWithCommas(FieldId, FieldKennung, FieldName, FieldVorname, FieldFähigkeiten, FieldSchicht, FieldTelefon, FieldMobil, FieldTelefonIntern, FieldFaxIntern, FieldEMail);
+                return SqlUtility.AppendWithCommas(FieldKennung, FieldName, FieldVorname, FieldFähigkeiten, FieldSchicht, FieldTelefon, FieldMobil, FieldTelefonIntern, FieldFaxIntern, FieldEMail);
             }
         }
 
@@ -122,7 +122,7 @@ namespace Personaleinsatzplanung.Models
             }
         }
 
-        public async void Save(MySQLHandler Sql)
+        public async void Save(ISqlHandler Sql)
         {
             await Sql.InsertAsync(Table, InsertFields, InsertValues);
         }
