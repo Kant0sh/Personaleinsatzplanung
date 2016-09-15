@@ -111,6 +111,19 @@
     <Compile Include="CustomControls\DateTimePicker_VonBis.xaml.cs">
       <DependentUpon>DateTimePicker_VonBis.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CustomControls\Timeline\TimelineRow.xaml.cs">
+      <DependentUpon>TimelineRow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CustomControls\Timeline\TimelineRowDay.xaml.cs">
+      <DependentUpon>TimelineRowDay.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CustomControls\Timeline\TimelineRowMitarbeiter.xaml.cs">
+      <DependentUpon>TimelineRowMitarbeiter.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CustomControls\Timeline\TimelineRowTime.cs" />
+    <Compile Include="CustomControls\Timeline\TimelineRowWeek.xaml.cs">
+      <DependentUpon>TimelineRowWeek.xaml</DependentUpon>
+    </Compile>
     <Compile Include="CustomControls\TimePicker_VonBis_Appending.xaml.cs">
       <DependentUpon>TimePicker_VonBis_Appending.xaml</DependentUpon>
     </Compile>
@@ -138,7 +151,9 @@
     <Compile Include="SQL\SqlUtility.cs" />
     <Compile Include="ViewModels\AdressBoxViewModel.cs" />
     <Compile Include="ViewModels\AusfallzeitHinzufügenViewModel.cs" />
+    <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\MitarbeiterErfassenViewModel.cs" />
+    <Compile Include="ViewModels\TimelineRowViewModel.cs" />
     <Compile Include="Views\MitarbeiterErfassen.xaml.cs">
       <DependentUpon>MitarbeiterErfassen.xaml</DependentUpon>
     </Compile>
@@ -157,6 +172,22 @@
     <Page Include="CustomControls\DateTimePicker_VonBis.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="CustomControls\Timeline\TimelineRow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CustomControls\Timeline\TimelineRowDay.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CustomControls\Timeline\TimelineRowMitarbeiter.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CustomControls\Timeline\TimelineRowWeek.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\AusfallzeitHinzufügen.xaml">
       <SubType>Designer</SubType>

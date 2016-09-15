@@ -69,7 +69,7 @@ namespace Personaleinsatzplanung.SQL
                 for (int j = 0; j < Data.FieldCount; j++)
                 {
                     string f = Data.FieldNames[j];
-                    object d = Data.GetFieldData(f)[i];
+                    object d = Data.GetRowData(i)[Data.FieldNames.IndexOf(f)];
                     if (f == Mitarbeiter.FieldId) mitarbeiter.Id = (int)d;
                     else if (f == Mitarbeiter.FieldKennung) mitarbeiter.Kennung = (string)d;
                     else if (f == Mitarbeiter.FieldName) mitarbeiter.Name = (string)d;
@@ -94,7 +94,7 @@ namespace Personaleinsatzplanung.SQL
             for (int j = 0; j < Data.FieldCount; j++)
             {
                 string f = Data.FieldNames[j];
-                object d = Data.GetFieldData(f)[0];
+                object d = Data.GetRowData(j)[0];
                 if (f == Schicht.FieldId) schicht.Id = (int)d;
                 else if (f == Schicht.FieldBezeichnung) schicht.Bezeichnung = (string)d;
             }

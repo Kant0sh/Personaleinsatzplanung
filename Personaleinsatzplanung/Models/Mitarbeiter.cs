@@ -127,6 +127,59 @@ namespace Personaleinsatzplanung.Models
             await Sql.InsertAsync(Table, InsertFields, InsertValues);
         }
 
+        public async static Task<Mitarbeiter> LoadAsync(ISqlHandler Sql, string[] fields, int Id)
+        {
+            SqlDataSet data = await Sql.SelectWhereAsync(Table, SqlUtility.AppendWithCommas(fields), SqlUtility.Equal(FieldId, Id));
+            Mitarbeiter mit = new Mitarbeiter();
+            for(int i = 0; i < data.FieldCount; i++)
+            {
+                string f = data.FieldNames[i];
+                object o = data.Data[0][i];
+                if (o is DBNull) o = default(object);
+                if (f == FieldId) mit.Id = (int)o;
+                else if (f == FieldKennung) mit.Kennung = (string)o;
+                else if (f == FieldName) mit.Name = (string)o;
+                else if (f == FieldVorname) mit.Vorname = (string)o;
+                else if (f == FieldFähigkeiten) mit.Fähigkeiten = (string)o;
+                else if (f == FieldSchicht) mit.Schicht.Id = (int)o;
+                else if (f == FieldTelefon) mit.Kontakt.Rufnummern.Add(new Rufnummer((string)o, RufnummerTyp.FestnetzPrivat));
+                else if (f == FieldMobil) mit.Kontakt.Rufnummern.Add(new Rufnummer((string)o, RufnummerTyp.MobilDienst));
+                else if (f == FieldTelefonIntern) mit.Kontakt.Rufnummern.Add(new Rufnummer((string)o, RufnummerTyp.FestnetzIntern));
+                else if (f == FieldFaxIntern) mit.Kontakt.Rufnummern.Add(new Rufnummer((string)o, RufnummerTyp.FaxIntern));
+                else if (f == FieldEMail) mit.Kontakt.EMail = (string)o;
+            }
+            return mit;
+        }
+
+        public async static Task<List<Mitarbeiter>> LoadAllAsync(string[] Fields, ISqlHandler Sql)
+        {
+            SqlDataSet data = await Sql.SelectAsync(Table, SqlUtility.AppendWithCommas(Fields));
+            List<Mitarbeiter> mitarbeiter = new List<Mitarbeiter>();
+            foreach(List<object> singleData in data.Data)
+            {
+                Mitarbeiter mit = new Mitarbeiter();
+                for (int i = 0; i < data.FieldCount; i++)
+                {
+                    string f = data.FieldNames[i];
+                    object o = singleData[i];
+                    if (o is DBNull) o = default(object);
+                    if (f == FieldId) mit.Id = (int)o;
+                    else if (f == FieldKennung) mit.Kennung = (string)o;
+                    else if (f == FieldName) mit.Name = (string)o;
+                    else if (f == FieldVorname) mit.Vorname = (string)o;
+                    else if (f == FieldFähigkeiten) mit.Fähigkeiten = (string)o;
+                    else if (f == FieldSchicht) mit.Schicht.Id = (int)o;
+                    else if (f == FieldTelefon) mit.Kontakt.Rufnummern.Add(new Rufnummer((string)o, RufnummerTyp.FestnetzPrivat));
+                    else if (f == FieldMobil) mit.Kontakt.Rufnummern.Add(new Rufnummer((string)o, RufnummerTyp.MobilDienst));
+                    else if (f == FieldTelefonIntern) mit.Kontakt.Rufnummern.Add(new Rufnummer((string)o, RufnummerTyp.FestnetzIntern));
+                    else if (f == FieldFaxIntern) mit.Kontakt.Rufnummern.Add(new Rufnummer((string)o, RufnummerTyp.FaxIntern));
+                    else if (f == FieldEMail) mit.Kontakt.EMail = (string)o;
+                }
+                mitarbeiter.Add(mit);
+            }
+            return mitarbeiter;
+        }
+
         int _id;
         public int Id
         {
@@ -259,6 +312,7 @@ namespace Personaleinsatzplanung.Models
 
         public Mitarbeiter()
         {
+            this.Schicht = new Schicht();
             this.Adressen = new List<Adresse>();
             this.Kontakt = new Kontakt();
             this.Id = 0;

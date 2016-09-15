@@ -5,10 +5,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Personaleinsatzplanung"
         xmlns:CustomControls="clr-namespace:Personaleinsatzplanung.CustomControls"
+        xmlns:TimelineControls="clr-namespace:Personaleinsatzplanung.CustomControls.Timeline"
         xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
         mc:Ignorable="d"
         Title="Personaleinsatzplanung" Height="700" Width="1200">
-    <StackPanel>
-        
-    </StackPanel>
+    <ItemsControl ItemsSource="{Binding TimelineRows}">
+        <ItemsControl.ItemsPanel>
+            <ItemsPanelTemplate>
+                <StackPanel Orientation="Vertical"/>
+            </ItemsPanelTemplate>
+        </ItemsControl.ItemsPanel>
+    </ItemsControl>
 </Window>

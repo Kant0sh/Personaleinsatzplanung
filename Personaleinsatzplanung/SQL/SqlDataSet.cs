@@ -39,15 +39,7 @@ namespace Personaleinsatzplanung.SQL
         {
             get
             {
-                int i = 0;
-                foreach(List<object> list in Data)
-                {
-                    if(list.Count > i)
-                    {
-                        i = list.Count;
-                    }
-                }
-                return i;
+                return Data.Count;
             }
         }
 
@@ -74,24 +66,20 @@ namespace Personaleinsatzplanung.SQL
         public void AddData(string FieldName, object data, int Index)
         {
             if (!FieldNames.Contains(FieldName)) AddField(FieldName);
-            while (GetFieldData(FieldName).Count <= Index) GetFieldData(FieldName).Add(default(object));
-            GetFieldData(FieldName)[Index] = data;
+            while (Data.Count < Index) Data.Add(new List<object>());
+            while (GetRowData(Index).Count < FieldCount) GetRowData(Index).Add(default(object));
+            GetRowData(Index)[FieldNames.IndexOf(FieldName)] = data;
         }
 
-        public List<object> GetFieldData(string FieldName)
+        public List<object> GetRowData(int RowIndex)
         {
-            return Data[FieldNames.IndexOf(FieldName)];
-        }
-
-        public object GetFieldData(string FieldName, int Index)
-        {
-            return GetFieldData(FieldName)[Index];
+            while (DataRowCount <= RowIndex) Data.Add(new List<object>());
+            return Data[RowIndex];
         }
 
         public void AddField(string FieldName)
         {
             FieldNames.Add(FieldName);
-            Data.Add(new List<object>());
         }
 
         public SqlDataSet() { }

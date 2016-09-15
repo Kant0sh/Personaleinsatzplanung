@@ -47,7 +47,7 @@ namespace Personaleinsatzplanung.Models
 
         public Kontakt()
         {
-
+            Rufnummern = new List<Rufnummer>();
         }
     }
 }

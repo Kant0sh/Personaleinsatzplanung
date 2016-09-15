@@ -38,7 +38,7 @@
 
             <CustomControls:LabelledTextBox LabelText="Suche:" Grid.Row="0" Grid.Column="0" Margin="0,0,0,10"/>
 
-            <telerik:RadGridView ShowColumnFooters="True" Name="mitarbeiterGrid" Grid.Row="1" Grid.ColumnSpan="3" ItemsSource="{Binding MitarbeiterList}" AutoGenerateColumns="False" SelectionMode="Extended" BorderBrush="{StaticResource {x:Static SystemColors.ActiveBorderBrushKey}}">
+            <telerik:RadGridView ShowColumnFooters="True" Name="mitarbeiterGrid" Grid.Row="1" Grid.ColumnSpan="3" ItemsSource="{Binding MitarbeiterList}" AutoGenerateColumns="False" SelectionMode="Extended" BorderBrush="{StaticResource {x:Static SystemColors.ActiveBorderBrushKey}}" DataLoadMode="Asynchronous" ActionOnLostFocus="None">
                 <telerik:RadGridView.Columns>
                     <telerik:GridViewSelectColumn Footer="{Binding SelectedItems.Count, ElementName=mitarbeiterGrid, Mode=OneWay}"/>
                     <telerik:GridViewDataColumn Header="Kennung" DataMemberBinding="{Binding Kennung}" IsReadOnly="True"/>
